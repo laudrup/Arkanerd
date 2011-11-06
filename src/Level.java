@@ -122,8 +122,7 @@ public class Level {
 		StringBuffer str;
 		Vector lines = new Vector();
 		try {
-		//Class c = getClass();
-		InputStream is = Level.class.getResourceAsStream(fname);
+                InputStream is = this.getClass().getResourceAsStream(fname);
 		str = new StringBuffer();
 		byte[] b = new byte[1];
 			while(is.read(b) != -1) {
