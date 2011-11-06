@@ -1,0 +1,12 @@
+# 0:None 1:Red 2:Green 3:White 4:Yellow 5:Blue
+# 6:Brown 7:Light Blue 8:Purple 9:Grey
+# 0:None 1:100 points bonus 2:Sticky ball 3:Break ball 4:Extra life
+# Name levelname
+# Must end with newline!
+Name i said so!
+14001000100010
+40114011401140
+91009000940091
+00000000000000
+90909090909090
+12201020132010
