@@ -1,5 +1,5 @@
-/* 
-    LivesLayer.java 
+/*
+    LivesLayer.java
 
     Arkanerd - An Arkanoid/Breakout like game for J2ME mobile phones
     Copyright (C) 2006  Kasper Laudrup
@@ -34,9 +34,9 @@ public class LivesLayer extends TiledLayer {
 	public LivesLayer(int lives) throws IOException {
 		super(5, 1, Image.createImage("/images/font.png"), 16, 16);
 		text = new String();
-		update(lives);	
+		update(lives);
 	}
-	
+
 	public void update(int lives) {
 			// Clear the collumns
 			fillCells(0,0,5,1,0);
@@ -44,7 +44,7 @@ public class LivesLayer extends TiledLayer {
 			for (int i=2;  i < lives + 2 && i < getColumns(); i++) {
 				setCell(i,0,47);
 			}
-			if (lives > 3) { 
+			if (lives > 3) {
 			// Fill in the number of lives
 			text = String.valueOf(lives);
 			if (lives > 9) {

@@ -1,5 +1,5 @@
-/* 
-    PointLayer.java 
+/*
+    PointLayer.java
 
     Arkanerd - An Arkanoid/Breakout like game for J2ME mobile phones
     Copyright (C) 2006  Kasper Laudrup
@@ -32,17 +32,17 @@ public class PointLayer extends TiledLayer {
 	private int digits;
 	private String text;
 	private final String CHARS = "abcdefghijklmnopqrstuvwxyz 0123456789!;:'-_?";
-	
+
 	public PointLayer(int digits) throws IOException {
 		super(digits, 1, Image.createImage("/images/font.png"), 16, 16);
 		for (int i=0; i < digits; i++) {
 			setCell(i,0,CHARS.indexOf("0") + 1);
 		}
-		this.digits = digits; 
+		this.digits = digits;
 		number = 0;
 		text = new String();
 	}
-	
+
 	public void setNum(int num) {
 		number = num;
 		text = String.valueOf(number);
@@ -50,7 +50,7 @@ public class PointLayer extends TiledLayer {
 			setCell(digits-text.length()+i,0,CHARS.indexOf(text.substring(i, i+1)) + 1);
 		}
 	}
-	
+
 	public void add(int amount) {
 		number += amount;
 		text = String.valueOf(number);

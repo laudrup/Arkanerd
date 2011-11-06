@@ -1,5 +1,5 @@
-/* 
-    Brick.java 
+/*
+    Brick.java
 
     Arkanerd - An Arkanoid/Breakout like game for J2ME mobile phones
     Copyright (C) 2006  Kasper Laudrup
@@ -34,7 +34,7 @@ public class Brick extends Sprite {
 	//private static Image image;
 	//public static final int BONUS = 1;
 	private int type;
-	
+
 	public Brick(int color, int type) throws IOException {
 		super(Image.createImage("/images/brick" + color + ".png"));
 		//super(1,1,getImage(),20,10);
@@ -47,7 +47,7 @@ public class Brick extends Sprite {
 	public int getType() {
 		return type;
 	}
-	
+
 	//private static Image getImage() throws IOException {
 		//if (image == null) {
 			//System.err.println("New image");

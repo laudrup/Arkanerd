@@ -1,5 +1,5 @@
-/* 
-    Ball.java 
+/*
+    Ball.java
 
     Arkanerd - An Arkanoid/Breakout like game for J2ME mobile phones
     Copyright (C) 2006  Kasper Laudrup
@@ -28,10 +28,10 @@ import javax.microedition.lcdui.game.Sprite;
 
 
 public class Ball extends Sprite {
-	
+
 	private int x_dir, y_dir, width;//, height;
 	private boolean sticky;
-	
+
 	public Ball(ArkanerdCanvas canvas) throws IOException {
 		super(Image.createImage("/images/ball.png"));
 		width = canvas.getWidth();
@@ -41,7 +41,7 @@ public class Ball extends Sprite {
 	//TODO: Set ball to start position
 	public void reset() {
 	}
-	
+
 	public void setSticky(boolean b) {
 		sticky = b;
 	}
@@ -49,20 +49,20 @@ public class Ball extends Sprite {
 	public boolean isSticky() {
 		return sticky;
 	}
-	
+
 	public void setAngle(int x_angle, int y_angle) {
 		x_dir = x_angle;
 		y_dir = y_angle;
 	}
-	
+
 	public void reverseX() {
 		x_dir = -x_dir;
 	}
-	
+
 	public void reverseY() {
 		y_dir = -y_dir;
 	}
-	
+
 	public void update() {
 		if(getX() >= width - ArkanerdCanvas.FRAME_WIDTH - getWidth() || getX() <= ArkanerdCanvas.FRAME_WIDTH) reverseX();
 		if(getY() < ArkanerdCanvas.FRAME_TOP) reverseY();

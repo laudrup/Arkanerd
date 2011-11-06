@@ -1,5 +1,5 @@
-/* 
-    Board.java 
+/*
+    Board.java
 
     Arkanerd - An Arkanoid/Breakout like game for J2ME mobile phones
     Copyright (C) 2006  Kasper Laudrup
@@ -27,7 +27,7 @@ import javax.microedition.lcdui.Image;
 import javax.microedition.lcdui.game.Sprite;
 
 public class Board extends Sprite {
-	
+
 	private static String BOARD_FILE = "/images/board.png";
 
 	public Board() throws IOException {

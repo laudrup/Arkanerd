@@ -1,5 +1,5 @@
-/* 
-    ArkanerdThread.java 
+/*
+    ArkanerdThread.java
 
     Arkanerd - An Arkanoid/Breakout like game for J2ME mobile phones
     Copyright (C) 2006  Kasper Laudrup
@@ -30,7 +30,7 @@ public class ArkanerdThread extends Thread {
 	ArkanerdThread(ArkanerdCanvas canvas) {
 		this.canvas = canvas;
 	}
-	
+
 	void pause() {
 		pause = true;
 	}
@@ -73,5 +73,5 @@ public class ArkanerdThread extends Thread {
 	    	  } catch(Exception e) {}
 	      }
 		}
-	}	
+	}
 }

@@ -1,5 +1,5 @@
-/* 
-    Main.java 
+/*
+    Main.java
 
     Arkanerd - An Arkanoid/Breakout like game for J2ME mobile phones
     Copyright (C) 2006  Kasper Laudrup
@@ -81,7 +81,7 @@ public class Main extends MIDlet implements CommandListener {
 		}
 		else if(cmd == SAVE_COMMAND) {
 			boolean selected[] = new boolean[settings_menu.size()];
-			// Fill array indicating whether each element is checked 
+			// Fill array indicating whether each element is checked
 			settings_menu.getSelectedFlags(selected);
 			settings.setMusic(selected[0]);
 			settings.saveConfig();
@@ -116,7 +116,7 @@ public class Main extends MIDlet implements CommandListener {
 		menu.setCommandListener(this);
 		display.setCurrent(menu);
 	}
-	
+
 	public void gameComplete(int points) {
 		if (arkanerdThread != null)
 			arkanerdThread.stop();
@@ -139,7 +139,7 @@ public class Main extends MIDlet implements CommandListener {
 		gameCompleteForm.setCommandListener(this);
 		display.setCurrent(gameCompleteForm);
 	}
-	
+
 	public void gameOver(int points) {
 		if (arkanerdThread != null)
 			arkanerdThread.stop();
@@ -161,7 +161,7 @@ public class Main extends MIDlet implements CommandListener {
 		//arkanerdCanvas.musicOn(settings.musicOn());
         arkanerdThread.start();
 	}
-	
+
 	private void showScoreString(int score, Form form) {
 		if (score > settings.getHighScore()) {
 			settings.setHighScore(score);
@@ -190,18 +190,18 @@ public class Main extends MIDlet implements CommandListener {
 		form.append(s4);
 		}
 	}
-	
+
 	private void settings() {
 		settings_menu = new List("Settings", List.MULTIPLE);
 		settings_menu.append("Enable Music", null);
 		settings_menu.setSelectedIndex(0, settings.musicOn());
-		settings_menu.setCommandListener(this); 
+		settings_menu.setCommandListener(this);
 		settings_menu.addCommand(BACK_COMMAND);
 		settings_menu.addCommand(SAVE_COMMAND);
 		settings_menu.setCommandListener(this);
 		display.setCurrent(settings_menu);
 	}
-	
+
 	private void highScores() {
 		Form highScoreForm = new Form("High Score");
 		StringItem highString = new StringItem(null, "High score: " + settings.getHighScore());
@@ -211,7 +211,7 @@ public class Main extends MIDlet implements CommandListener {
 		highScoreForm.setCommandListener(this);
 		display.setCurrent(highScoreForm);
 	}
-	
+
 	private void instructions() {
 		Form instructionsForm = new Form("Instructions");
 		instructionsForm.append(
@@ -233,7 +233,7 @@ public class Main extends MIDlet implements CommandListener {
 			instructionsForm.append(bonus);
 		} catch (IOException e) {}
 		instructionsForm.append("Adds 100 points to the current score.");
-		
+
 		try {
 			Image img = Image.createImage(Image.createImage("/images/bonus2.png"), 0, 0, 20, 10, Sprite.TRANS_NONE);
 			ImageItem bonus = new ImageItem("Sticky ball", img, Item.LAYOUT_LEFT | Item.LAYOUT_NEWLINE_AFTER, "");
@@ -259,12 +259,12 @@ public class Main extends MIDlet implements CommandListener {
 
 		instructionsForm.addCommand(BACK_COMMAND);
 		instructionsForm.setCommandListener(this);
-		display.setCurrent(instructionsForm);	
+		display.setCurrent(instructionsForm);
 	}
-	
+
 	private void about() {
-		Form aboutForm = new Form("About Arkanerd"); 
-		String aboutText = 
+		Form aboutForm = new Form("About Arkanerd");
+		String aboutText =
 			"A little Arkanoid/Break-out like game for Java MIDP 2.0\n\n" +
 			"Copyright (C) 2006 Kasper Laudrup\n\n" +
 			"Arkanerd is free software, covered by the GNU General Public License," +
@@ -274,6 +274,6 @@ public class Main extends MIDlet implements CommandListener {
 		aboutForm.append(new StringItem(null, aboutText));
 		aboutForm.addCommand(BACK_COMMAND);
 		aboutForm.setCommandListener(this);
-		display.setCurrent(aboutForm);		
+		display.setCurrent(aboutForm);
 	}
 }

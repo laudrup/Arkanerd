@@ -1,5 +1,5 @@
-/* 
-    TitleCanvas.java 
+/*
+    TitleCanvas.java
 
     Arkanerd - An Arkanoid/Breakout like game for J2ME mobile phones
     Copyright (C) 2006  Kasper Laudrup
@@ -35,7 +35,7 @@ import javax.microedition.media.Player;
 import javax.microedition.media.PlayerListener;
 
 public class TitleCanvas extends Canvas implements PlayerListener {
-	
+
 	private int width, height;
 	private Main main;
 	private TextLayer text;
@@ -74,7 +74,7 @@ public class TitleCanvas extends Canvas implements PlayerListener {
 			 System.err.println(ioe.getMessage());
 		 }
 	}
-	
+
 	protected void paint(Graphics g) {
 		bgLayer.paint(g);
 		text.paint(g);
@@ -93,7 +93,7 @@ public class TitleCanvas extends Canvas implements PlayerListener {
 					(height /2 + height /4 + f.getHeight()) + 2,
 					 Graphics.TOP | Graphics.HCENTER);
 	}
-	
+
 	public void playerUpdate(Player player, String event, Object data) {
 		if (event == END_OF_MEDIA) {
 			try {
@@ -103,7 +103,7 @@ public class TitleCanvas extends Canvas implements PlayerListener {
 			main.showMenu();
 		}
 	}
-	
+
 	protected void keyPressed(int key) {
 		try {
 			player.stop();

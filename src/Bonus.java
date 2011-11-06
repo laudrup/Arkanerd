@@ -1,5 +1,5 @@
-/* 
-    Bonus.java 
+/*
+    Bonus.java
 
     Arkanerd - An Arkanoid/Breakout like game for J2ME mobile phones
     Copyright (C) 2006  Kasper Laudrup
@@ -34,7 +34,7 @@ public class Bonus {
 	private Vector bonusBricks;
 	private LayerManager layerManager;
 	private ArkanerdCanvas canvas;
-	
+
 	public Bonus(LayerManager layerManager, ArkanerdCanvas canvas) {
 		this.layerManager = layerManager;
 		this.canvas = canvas;
@@ -49,15 +49,15 @@ public class Bonus {
 		layerManager.insert(bonusBrick, 3);
 		bonusBricks.addElement(bonusBrick);
 	}
-	
+
 	public void clear() {
 		for(Enumeration e = bonusBricks.elements(); e.hasMoreElements();) {
-			bonusBrick = (BonusBrick)e.nextElement(); 
+			bonusBrick = (BonusBrick)e.nextElement();
 			bonusBrick.setVisible(false);
 		}
 		bonusBricks.removeAllElements();
 	}
-	
+
 	public void update() {
 		for(Enumeration e = bonusBricks.elements(); e.hasMoreElements();) {
 			bonusBrick = (BonusBrick)e.nextElement();
@@ -67,7 +67,7 @@ public class Bonus {
 	        	bonusBricks.removeElement(bonusBrick);
 		}
 	}
-	
+
 	// Return the type of the last bonus hit
 	public int getType() {
 		return bonusBrick.getType();

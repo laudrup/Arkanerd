@@ -1,5 +1,5 @@
-/* 
-    Bricks.java 
+/*
+    Bricks.java
 
     Arkanerd - An Arkanoid/Breakout like game for J2ME mobile phones
     Copyright (C) 2006  Kasper Laudrup
@@ -36,7 +36,7 @@ public class Bricks {
 
 	public Bricks(ArkanerdCanvas canvas, Level level) {
 		width = canvas.getWidth();
-		this.level = level; 
+		this.level = level;
 		loadBricks();
 		bricks_left = bricks.size();
 	}
@@ -73,15 +73,15 @@ public class Bricks {
 	public int getBricksLeft() {
 		return bricks_left;
 	}
-	
+
 	public int getNumBricks() {
 		return num_bricks;
 	}
-	
+
 	public Brick getBrick(int i) {
 		return (Brick)bricks.elementAt(i);
 	}
-	
+
 	// Get the last hit brick
 	public Brick getBrick() {
 		return brick;

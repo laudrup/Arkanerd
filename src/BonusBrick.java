@@ -1,5 +1,5 @@
-/* 
-    BonusBrick.java 
+/*
+    BonusBrick.java
 
     Arkanerd - An Arkanoid/Breakout like game for J2ME mobile phones
     Copyright (C) 2006  Kasper Laudrup
@@ -32,12 +32,12 @@ public class BonusBrick extends Sprite {
 	public static final int BREAK_BONUS = 3;
 	public static final int LIVE_BONUS = 4;
 	private int type;
-	
+
 	public BonusBrick(int type) throws IOException {
 		super(Image.createImage("/images/bonus" + type + ".png"), 20, 10);
-		this.type = type; 
+		this.type = type;
 	}
-	
+
 	public int getType() {
 		return type;
 	}

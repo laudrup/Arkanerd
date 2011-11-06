@@ -1,5 +1,5 @@
-/* 
-    Settings.java 
+/*
+    Settings.java
 
     Arkanerd - An Arkanoid/Breakout like game for J2ME mobile phones
     Copyright (C) 2006  Kasper Laudrup
@@ -30,13 +30,13 @@ import javax.microedition.rms.RecordStore;
 import javax.microedition.rms.RecordStoreException;
 
 public class Settings {
-	
+
 	private final String STORE_NAME = "Settings";
 	private RecordStore records;
 	public int record_id;
 	private int high_score;
 	private boolean music_on;
-	
+
 	public Settings() {
 		try {
 			records = RecordStore.openRecordStore(STORE_NAME, true);
@@ -46,23 +46,23 @@ public class Settings {
 			} else loadConfig();
 		} catch (RecordStoreException e) {}
 	}
-	
+
 	public void setHighScore(int h) {
 		high_score = h;
 	}
-	
+
 	public int getHighScore() {
 		return high_score;
 	}
-	
+
 	public void setMusic(boolean b) {
 		music_on = b;
 	}
-	
+
 	public boolean musicOn() {
 		return music_on;
 	}
-	
+
 	public void saveConfig() {
 		ByteArrayOutputStream bout = new ByteArrayOutputStream();
 		DataOutputStream dout = new DataOutputStream(bout);
@@ -73,24 +73,24 @@ public class Settings {
 		    dout.close();
 
 		    byte[] data = bout.toByteArray();
-			if(records.getNumRecords() == 0)	
+			if(records.getNumRecords() == 0)
 				records.addRecord(data, 0, data.length);
 			else records.setRecord(1, data, 0, data.length);
 		}
 		catch(RecordStoreException e) {}
 		catch(IOException e) {}
-	}	
-	
+	}
+
 	private void loadConfig() {
 		ByteArrayInputStream bin;
 		DataInputStream din;
-		
+
 		try {
 		    byte[] data = records.getRecord(1);
-		     
+
 		    bin = new ByteArrayInputStream( data );
 		    din = new DataInputStream( bin );
-		    
+
 		    high_score = din.readInt();
 		    music_on = din.readBoolean();
 

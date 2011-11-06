@@ -33,7 +33,7 @@ public class ScaleImage {
 
 	/**
 	 * Creates a new, scaled version of the given image.
-	 * 
+	 *
 	 * @param src: The source image
 	 * @param dstW: The destination (scaled) image width
 	 * @param dstH: The destination (scaled) image height
@@ -65,9 +65,9 @@ public class ScaleImage {
 		for (int y = 0; y < dstH; y++) {
 			g.setClip(0, y, dstW, 1);
 			g.drawImage(tmp, 0, y - (pos >> 16), Graphics.LEFT | Graphics.TOP);
-			pos += delta;	
+			pos += delta;
 		}
 
-		return dst;		
+		return dst;
 	}
 }

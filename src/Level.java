@@ -1,5 +1,5 @@
-/* 
-    Level.java 
+/*
+    Level.java
 
     Arkanerd - An Arkanoid/Breakout like game for J2ME mobile phones
     Copyright (C) 2006  Kasper Laudrup
@@ -34,40 +34,40 @@ public class Level {
 
 	// Number of bricks _excluding_ empty (Actual number of images in this level)
 		public int getNumBricks() {
-			return num_bricks;	
+			return num_bricks;
 		}
-	
+
 	// Number of rows _including_ empty
 		public int getBricks_x() {
 			return bricks_x;
 		}
-	
+
 	// Number of lines _including_ empty
 		public int getBricks_y() {
 			return bricks_y;
 		}
-		
+
 		public String getName() {
 			return name;
 		}
-	
+
 	public Level(int num) {
-		bricks_x = 0; 
+		bricks_x = 0;
 		bricks_y = 0;
 		num_bricks = 0;
 		name = "";
 		Vector lines = readFile("/levels/level" + num + ".txt");
 		parseLevelFile(lines);
 	}
-	
+
 	public boolean isEmpty(int i) {
 		return empty[i];
 	}
-	
+
 	public Vector getBricks() {
 		return bricks;
 	}
-	
+
 	private void parseLevelFile(Vector lines) {
 		String line ="";
 		int color, type;
@@ -88,7 +88,7 @@ public class Level {
 	         else {
 	        	// The definition of a brick is 2 chars
 	        	bricks_x = line.length() / 2;
-	        	bricks_y++;        	
+	        	bricks_y++;
          	}
          }
 		// Then get the brick definitions
@@ -117,7 +117,7 @@ public class Level {
         	}
         }
      }
-	
+
 	private Vector readFile(String fname) {
 		StringBuffer str;
 		Vector lines = new Vector();
@@ -128,7 +128,7 @@ public class Level {
 			while(is.read(b) != -1) {
 				if(b[0] == '\n') {
 					lines.addElement(new String(str));
-					str = new StringBuffer();	
+					str = new StringBuffer();
 				} else {
 					str.append(new String(b));
 				}

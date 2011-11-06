@@ -1,5 +1,5 @@
-/* 
-    ArkanerdCanvas.java 
+/*
+    ArkanerdCanvas.java
 
     Arkanerd - An Arkanoid/Breakout like game for J2ME mobile phones
     Copyright (C) 2006  Kasper Laudrup
@@ -88,11 +88,11 @@ public class ArkanerdCanvas extends GameCanvas {
 	//public void musicOn(boolean b) {
 		//music_on = b;
 	//}
-	
+
 	public void setThread(ArkanerdThread thread) {
-		this.thread = thread;	
+		this.thread = thread;
 	}
-	
+
 	public void flushKeys() {
 		getKeyStates();
 	}
@@ -112,7 +112,7 @@ public class ArkanerdCanvas extends GameCanvas {
 		// Show start text and pause game
 		start();
 	}
-	
+
 	private void start() {
 		current_bonus = BonusBrick.NO_BONUS;
 
@@ -147,7 +147,7 @@ public class ArkanerdCanvas extends GameCanvas {
 		//TODO:
 		ball.setAngle(2, -3);
 		ball.setPosition(width/2  - ball.getWidth()/2, height - BOARD_SPACE - ball.getHeight());
-		
+
 		// Set up the new bricks for this level
 		board.setPosition(width/2 - board.getWidth()/2, height - BOARD_SPACE);
 		bricks = new Bricks(this, level);
@@ -165,7 +165,7 @@ public class ArkanerdCanvas extends GameCanvas {
 		bgLayer = new TiledLayer(1, rows, bgImage, bgImage.getWidth(), bgImage.getHeight());
 		bgLayer.fillCells(0,0,1,rows,1);
 		layerManager.append(bgLayer);
-		
+
 		// Set music for this level (if possible)
 		if (settings.musicOn()) {
 			System.err.println("Trying to create player");
@@ -183,10 +183,10 @@ public class ArkanerdCanvas extends GameCanvas {
 		}
 		// Clean up
 		System.gc();
-		
+
 		// Render the initial graphics
 		render();
-		
+
 		// Show start text and pause game
 		start();
 	}
@@ -207,7 +207,7 @@ public class ArkanerdCanvas extends GameCanvas {
 				if (currentX-BOARD_SPEED > FRAME_WIDTH)
 				ball.move(-BOARD_SPEED, 0);
 		}
-		if ((keyStates & RIGHT_PRESSED) != 0) {      
+		if ((keyStates & RIGHT_PRESSED) != 0) {
 			board.setPosition(Math.min(width-FRAME_WIDTH-board.getWidth(), currentX+BOARD_SPEED), height-BOARD_SPACE);
 			if (ball.isSticky())
 				if(width -FRAME_WIDTH-board.getWidth() > currentX+BOARD_SPEED)
@@ -236,7 +236,7 @@ public class ArkanerdCanvas extends GameCanvas {
 				ball.setSticky(true);
 			}
 		}
-		
+
 		// See if the ball hit any bricks
 		if(bricks.checkCollisions(ball)) {
 			// We have a collision, but where did we hit the brick?
@@ -254,7 +254,7 @@ public class ArkanerdCanvas extends GameCanvas {
 				bonus.addBonus(brick.getX(), brick.getY(), brick.getType());
 			}
 		}
-		
+
 		// See if the board picked up a bonus
 		if(bonus.checkCollisions(board)) {
 			switch(bonus.getType()) {
@@ -279,15 +279,15 @@ public class ArkanerdCanvas extends GameCanvas {
 	}
 
 	public void render() {
-		
+
 		Graphics g = getGraphics();
 		layerManager.paint(g, 0, 0);
 		flushGraphics();
 	}
-	
+
 	public synchronized void keyPressed(int keyCode) {
 		layerManager.remove(textLayer);
 		thread.resumeGame();
 	}
-	
+
 }
