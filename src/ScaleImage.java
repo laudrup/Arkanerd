@@ -31,43 +31,43 @@ import javax.microedition.lcdui.Image;
 
 public class ScaleImage {
 
-	/**
-	 * Creates a new, scaled version of the given image.
-	 *
-	 * @param src: The source image
-	 * @param dstW: The destination (scaled) image width
-	 * @param dstH: The destination (scaled) image height
-	 * @return Image: A new Image object with the given width and height.
-	 */
+    /**
+     * Creates a new, scaled version of the given image.
+     *
+     * @param src: The source image
+     * @param dstW: The destination (scaled) image width
+     * @param dstH: The destination (scaled) image height
+     * @return Image: A new Image object with the given width and height.
+     */
 
-	public static Image scaleImage (Image src, int dstW, int dstH) {
-		int srcW = src.getWidth();
-		int srcH = src.getHeight();
+    public static Image scaleImage (Image src, int dstW, int dstH) {
+        int srcW = src.getWidth();
+        int srcH = src.getHeight();
 
-		Image tmp = Image.createImage(dstW, srcH);
-		Graphics g = tmp.getGraphics();
+        Image tmp = Image.createImage(dstW, srcH);
+        Graphics g = tmp.getGraphics();
 
-		int delta = (srcW << 16) / dstW;
-		int pos = delta/2;
+        int delta = (srcW << 16) / dstW;
+        int pos = delta/2;
 
-		for (int x = 0; x < dstW; x++) {
-			g.setClip(x, 0, 1, srcH);
-			g.drawImage(src, x - (pos >> 16), 0, Graphics.LEFT | Graphics.TOP);
-			pos += delta;
-		}
+        for (int x = 0; x < dstW; x++) {
+            g.setClip(x, 0, 1, srcH);
+            g.drawImage(src, x - (pos >> 16), 0, Graphics.LEFT | Graphics.TOP);
+            pos += delta;
+        }
 
-		Image dst = Image.createImage(dstW, dstH);
-		g = dst.getGraphics();
+        Image dst = Image.createImage(dstW, dstH);
+        g = dst.getGraphics();
 
-		delta = (srcH << 16) / dstH;
-		pos = delta/2;
+        delta = (srcH << 16) / dstH;
+        pos = delta/2;
 
-		for (int y = 0; y < dstH; y++) {
-			g.setClip(0, y, dstW, 1);
-			g.drawImage(tmp, 0, y - (pos >> 16), Graphics.LEFT | Graphics.TOP);
-			pos += delta;
-		}
+        for (int y = 0; y < dstH; y++) {
+            g.setClip(0, y, dstW, 1);
+            g.drawImage(tmp, 0, y - (pos >> 16), Graphics.LEFT | Graphics.TOP);
+            pos += delta;
+        }
 
-		return dst;
-	}
+        return dst;
+    }
 }
