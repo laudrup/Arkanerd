@@ -1,4 +1,1 @@
-*~
-classes/
-*.jar
-*.jad
+.cache
