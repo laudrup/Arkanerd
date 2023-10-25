@@ -7,7 +7,6 @@
 #include "PointLayer.h"
 #include "LivesLayer.h"
 #include "TextLayer.h"
-#include "ArkanerdThread.h"
 #include "Level.h"
 
 #include "j2me/GameCanvas.h"
@@ -52,7 +51,6 @@ public:
   static constexpr int BOARD_SPACE = 20;
 
   ArkanerdCanvas(Main* main, Settings* settings);
-  void setThread(ArkanerdThread *thread);
   void flushKeys();
   void dead();
   void nextLevel();
@@ -83,7 +81,6 @@ private:
   j2me::TiledLayer* bg_layer_ = nullptr;
   TextLayer* textLayer;
   j2me::LayerManager* layer_manager_ = nullptr;
-  ArkanerdThread* thread_ = nullptr;
   Level* level_;
   int current_bonus_ = 0;
   int width_ = 0;

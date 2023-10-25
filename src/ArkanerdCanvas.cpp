@@ -44,10 +44,6 @@ ArkanerdCanvas::ArkanerdCanvas(Main *main, Settings *settings)
   layer_manager_->append(ball_);
 }
 
-void ArkanerdCanvas::setThread(ArkanerdThread *thread) {
-  this->thread_ = thread;
-}
-
 void ArkanerdCanvas::flushKeys() {
   getKeyStates();
 }

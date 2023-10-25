@@ -3,7 +3,6 @@
 #include "TitleCanvas.h"
 #include "Settings.h"
 #include "ArkanerdCanvas.h"
-#include "ArkanerdThread.h"
 
 #include "j2me/Command.h"
 #include "j2me/CommandListener.h"
@@ -66,7 +65,6 @@ private:
   TitleCanvas* titleCanvas_;
   Settings* settings_;
   ArkanerdCanvas* arkanerd_canvas_;
-  ArkanerdThread* arkanerd_thread_;
   j2me::List* settings_menu;
 };
 

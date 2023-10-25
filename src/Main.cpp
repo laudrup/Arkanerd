@@ -62,9 +62,6 @@ void Main::showMenu() {
 }
 
 void Main::gameComplete(int points) {
-  if (arkanerd_thread_ != nullptr) {
-    arkanerd_thread_->stop();
-  }
   j2me::Form *gameCompleteForm = new j2me::Form(this, "Game completed!");
   auto gameOverString = std::make_unique<j2me::StringItem>(std::nullopt, "You did it!\n");
   gameOverString->setFont(j2me::Font::getFont(j2me::Font::FACE_MONOSPACE, j2me::Font::STYLE_BOLD, j2me::Font::SIZE_LARGE));
@@ -86,9 +83,6 @@ void Main::gameComplete(int points) {
 }
 
 void Main::gameOver(int points) {
-  if (arkanerd_thread_ != nullptr) {
-    arkanerd_thread_->stop();
-  }
   j2me::Form* gameOverForm = new j2me::Form(this, "Game over!");
   auto deadString = std::make_unique<j2me::StringItem>(std::nullopt, "Game over!\n");
   deadString->setFont(j2me::Font::getFont(j2me::Font::FACE_MONOSPACE, j2me::Font::STYLE_BOLD, j2me::Font::SIZE_LARGE));

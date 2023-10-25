@@ -44,7 +44,6 @@ add_library(j2me STATIC
   src/j2me/Player.cpp
   src/j2me/StringItem.cpp
   src/j2me/Graphics.cpp
-  src/j2me/RecordStore.cpp
   src/j2me/Displayable.cpp
   src/j2me/Item.cpp
   src/j2me/CommandListener.cpp
@@ -71,7 +70,6 @@ target_link_libraries(j2me PUBLIC
 
 add_executable(arkanerd
   src/ArkanerdCanvas.cpp
-  src/ArkanerdThread.cpp
   src/Ball.cpp
   src/Board.cpp
   src/BonusBrick.cpp
@@ -82,7 +80,6 @@ add_executable(arkanerd
   src/LivesLayer.cpp
   src/Main.cpp
   src/PointLayer.cpp
-  src/ScaleImage.cpp
   src/Settings.cpp
   src/TextLayer.cpp
   src/TitleCanvas.cpp
