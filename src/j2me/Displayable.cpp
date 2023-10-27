@@ -30,6 +30,7 @@ void Displayable::handleKey(sf::Keyboard::Key key) {
   auto canvas = dynamic_cast<Canvas*>(this);
   if (canvas) {
     canvas->keyPressed(key);
+    return;
   }
   if (command_listener_ == nullptr) {
     return;

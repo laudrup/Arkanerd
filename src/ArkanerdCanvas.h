@@ -3,6 +3,7 @@
 #include "Board.h"
 #include "Ball.h"
 #include "Bonus.h"
+#include "BricksLayer.h"
 #include "Settings.h"
 #include "PointLayer.h"
 #include "LivesLayer.h"
@@ -21,7 +22,6 @@
 
 namespace arkanerd {
 class Main;
-class BricksLayer;
 
 class ArkanerdCanvas : public j2me::GameCanvas {
 public:
@@ -44,23 +44,24 @@ private:
   friend class BricksLayer;
   void start();
 
-  bool paused_ = true;
-  Board* board_ = nullptr;
-  //private Font f;
   Main* main_ = nullptr;
-  Ball* ball_ = nullptr;
-  Bonus* bonus_ = nullptr;
-  BricksLayer* bricks_layer_ = nullptr;
+  bool paused_ = true;
+
+  j2me::LayerManager layer_manager_;
+
+  std::unique_ptr<Board> board_;
+  std::unique_ptr<Ball> ball_;
+  std::unique_ptr<Bonus> bonus_;
+  std::unique_ptr<BricksLayer> bricks_layer_;
   j2me::Image bgimage_;
-  j2me::Player* player_ = nullptr;
+  std::unique_ptr<j2me::Player> player_;
   //private boolean music_on;
   Settings* settings_ = nullptr;
-  PointLayer* point_layer_ = nullptr;
-  LivesLayer* lives_layer_ = nullptr;
-  j2me::TiledLayer* bg_layer_ = nullptr;
-  TextLayer* textLayer;
-  j2me::LayerManager* layer_manager_ = nullptr;
-  Level* level_;
+  std::unique_ptr<PointLayer> point_layer_;
+  std::unique_ptr<LivesLayer> lives_layer_;
+  std::unique_ptr<j2me::TiledLayer> bg_layer_;
+  std::unique_ptr<TextLayer> textLayer;
+  std::unique_ptr<Level> level_;
   int current_bonus_ = 0;
   int width_ = 0;
   int height_ = 0;

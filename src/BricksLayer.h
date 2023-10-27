@@ -2,15 +2,15 @@
 
 #include "Level.h"
 #include "Brick.h"
-#include "ArkanerdCanvas.h"
 
 #include "j2me/Layer.h"
-#include "j2me/LayerManager.h"
 
 #include <memory>
 #include <vector>
 
 namespace arkanerd {
+class ArkanerdCanvas;
+
 class BricksLayer : public j2me::Layer {
 public:
   BricksLayer(ArkanerdCanvas *canvas, Level *level);

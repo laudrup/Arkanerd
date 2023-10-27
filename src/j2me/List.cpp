@@ -64,6 +64,7 @@ void List::handleKey(sf::Keyboard::Key key) {
         auto displayable = dynamic_cast<Displayable*>(this);
         if (displayable->command_listener_ != nullptr) {
           displayable->command_listener_->commandAction(SELECT_COMMAND, *displayable);
+          return;
         }
       }
       break;

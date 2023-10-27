@@ -1,4 +1,5 @@
 #include "BricksLayer.h"
+#include "ArkanerdCanvas.h"
 
 namespace arkanerd {
 BricksLayer::BricksLayer(ArkanerdCanvas *canvas, Level *level)

@@ -15,12 +15,12 @@ TitleCanvas::TitleCanvas(Main* main)
   height_ = getHeight();
   f_ = j2me::Font::getFont(j2me::Font::FACE_SYSTEM, j2me::Font::STYLE_PLAIN, j2me::Font::SIZE_SMALL);
 
-  text_ = new TextLayer("arkanerd", 8);
+  text_ = std::make_unique<TextLayer>("arkanerd", 8);
   bg_image_ = j2me::Image::createImage("/images/titlebg.png");
 
   text_->setPosition((width_ - text_->getWidth()) / 2, (height_ - text_->getHeight()) / 2);
   int rows = (height_ / bg_image_.getHeight()) + 1;
-  bg_layer_ = new j2me::TiledLayer(1, rows, bg_image_, bg_image_.getWidth(), bg_image_.getHeight());
+  bg_layer_ = std::make_unique<j2me::TiledLayer>(1, rows, bg_image_, bg_image_.getWidth(), bg_image_.getHeight());
   bg_layer_->fillCells(0,0,1,rows,1);
 
   std::ifstream ins{"/music/intro.mid"};

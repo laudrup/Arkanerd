@@ -12,7 +12,6 @@ int MIDlet::run() {
   startApp();
   auto& window = display_.window_;
   while (window.isOpen()) {
-    auto displayable = display_.getCurrent();
     sf::Event event;
     while (window.pollEvent(event)) {
       switch (event.type) {
@@ -20,6 +19,7 @@ int MIDlet::run() {
           window.close();
           break;
         case sf::Event::KeyPressed: {
+          auto displayable = display_.getCurrent();
           displayable->handleKey(event.key.code);
           break;
         }
@@ -38,6 +38,7 @@ int MIDlet::run() {
     }
     window.clear(sf::Color::Red);
     j2me::Graphics g{&window};
+    auto displayable = display_.getCurrent();
     displayable->handlePaint(&g);
     if (auto game_canvas = dynamic_cast<GameCanvas*>(displayable); game_canvas != nullptr) {
       game_canvas->update();

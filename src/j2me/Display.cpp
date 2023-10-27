@@ -21,13 +21,13 @@ Display* Display::getDisplay(j2me::MIDlet* m) {
   return &m->display_;
 }
 
-void Display::setCurrent(Displayable* nextDisplayable) {
-  displayable_ = nextDisplayable;
+void Display::setCurrent(std::unique_ptr<Displayable> nextDisplayable) {
+  displayable_ = std::move(nextDisplayable);
   window_.setView(displayable_->view_);
 }
 
 Displayable* Display::getCurrent() const {
-  return displayable_;
+  return displayable_.get();
 }
 
 } // namespace j2me

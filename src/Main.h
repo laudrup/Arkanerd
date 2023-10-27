@@ -1,15 +1,12 @@
 #pragma once
 
-#include "TitleCanvas.h"
 #include "Settings.h"
-#include "ArkanerdCanvas.h"
 
 #include "j2me/Command.h"
 #include "j2me/CommandListener.h"
 #include "j2me/Display.h"
 #include "j2me/Displayable.h"
 #include "j2me/Form.h"
-#include "j2me/List.h"
 #include "j2me/MIDlet.h"
 
 #include <string>
@@ -41,10 +38,7 @@ private:
   void about();
 
   j2me::Display* display_;
-  TitleCanvas* titleCanvas_;
-  Settings* settings_;
-  ArkanerdCanvas* arkanerd_canvas_;
-  j2me::List* settings_menu;
+  std::unique_ptr<Settings> settings_;
 };
 
 } // namespace arkanerd

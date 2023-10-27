@@ -29,12 +29,12 @@ private:
   int width_ = 0;
   int height_ = 0;
   Main* main_;
-  TextLayer* text_;
+  std::unique_ptr<TextLayer> text_;
   j2me::Font f_;
   const std::string S1_ = "Kasper Laudrup";
   const std::string S2_ = "Copyright (c) 2006/7";
   j2me::Image bg_image_;
-  j2me::TiledLayer* bg_layer_;
+  std::unique_ptr<j2me::TiledLayer> bg_layer_;
   j2me::Player player_;
 };
 
