@@ -23,6 +23,12 @@ Sprite::Sprite(const j2me::Image& img, int frameWidth, int frameHeight)
   frame_ = images_.begin();
 }
 
+Sprite::Sprite(const Sprite& other)
+  : Layer(other)
+  , images_(other.images_)
+  , frame_(images_.begin()) {
+}
+
 void Sprite::paint(Graphics* g) {
   if (!images_.empty()) {
     g->drawImage(*frame_, getX(), getY(), Graphics::LEFT | Graphics::TOP);

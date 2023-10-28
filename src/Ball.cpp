@@ -47,4 +47,4 @@ namespace arkanerd {
 			move(x_dir, y_dir); //sy += y_dir;
 		}
 	}
-}
+} // namespace arkanerd

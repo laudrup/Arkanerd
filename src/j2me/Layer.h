@@ -8,8 +8,8 @@ public:
   virtual ~Layer() = default;
   virtual void paint(Graphics*) = 0;
   virtual void clear() = 0;
-  int getHeight();
-  int getWidth();
+  int getHeight() const;
+  int getWidth() const;
   void setPosition(int x, int y);
   int getX();
   int getY();

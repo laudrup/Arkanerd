@@ -50,7 +50,7 @@ Brick BricksLayer::getBrick() {
 bool BricksLayer::checkCollisions(j2me::Sprite* sprite) {
   for (auto it = bricks_.begin(); it != bricks_.end(); ++it) {
     if (it->collidesWith(sprite, false)) {
-      brick_ = *it;
+      brick_ = std::move(*it);
       bricks_.erase(it);
       return true;
     }

@@ -73,7 +73,7 @@ add_executable(arkanerd
   src/Ball.cpp
   src/Board.cpp
   src/BonusBrick.cpp
-  src/Bonus.cpp
+  src/BonusLayer.cpp
   src/Brick.cpp
   src/BricksLayer.cpp
   src/Level.cpp

@@ -2,7 +2,7 @@
 
 #include "Board.h"
 #include "Ball.h"
-#include "Bonus.h"
+#include "BonusLayer.h"
 #include "BricksLayer.h"
 #include "Settings.h"
 #include "PointLayer.h"
@@ -51,7 +51,7 @@ private:
 
   std::unique_ptr<Board> board_;
   std::unique_ptr<Ball> ball_;
-  std::unique_ptr<Bonus> bonus_;
+  std::unique_ptr<BonusLayer> bonus_layer_;
   std::unique_ptr<BricksLayer> bricks_layer_;
   j2me::Image bgimage_;
   std::unique_ptr<j2me::Player> player_;
@@ -60,7 +60,7 @@ private:
   std::unique_ptr<PointLayer> point_layer_;
   std::unique_ptr<LivesLayer> lives_layer_;
   std::unique_ptr<j2me::TiledLayer> bg_layer_;
-  std::unique_ptr<TextLayer> textLayer;
+  std::unique_ptr<TextLayer> text_layer_;
   std::unique_ptr<Level> level_;
   int current_bonus_ = 0;
   int width_ = 0;

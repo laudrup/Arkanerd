@@ -22,11 +22,6 @@ void LayerManager::paint(Graphics* g, int, int) {
   for (auto l : layers_) {
     l->paint(g);
   }
-  //for (auto it = layers_.rbegin(); it != layers_.rend(); ++it) {
-    //(*it)->setPosition(x, y);
-    //std::cerr << "Paiting at: " << (*it)->getX() << ", " << (*it)->getY() << "\n";
-    //(*it)->paint(g);
-    //}
 }
 
 void LayerManager::clear() {

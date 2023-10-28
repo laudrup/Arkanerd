@@ -2,7 +2,6 @@
 
 #include "BonusBrick.h"
 
-#include "j2me/LayerManager.h"
 #include "j2me/Sprite.h"
 
 #include <vector>
@@ -11,21 +10,22 @@ namespace arkanerd {
 
 class ArkanerdCanvas;
 
-class Bonus {
+class BonusLayer : public j2me::Layer {
 
 public:
-  Bonus(j2me::LayerManager *layerManager, ArkanerdCanvas *canvas);
+  BonusLayer(ArkanerdCanvas* canvas);
   void addBonus(int x, int y, int type);
-  void clear();
   void update();
   // Return the type of the last bonus hit
   int getType();
-  bool checkCollisions(j2me::Sprite *sprite);
+  bool checkCollisions(j2me::Sprite* sprite);
+  void paint(j2me::Graphics* g) final;
+  void clear() final;
+  void reset();
 
 private:
-  BonusBrick* bonus_brick_ = nullptr;
-  std::vector<BonusBrick*> bonus_bricks_;
-  j2me::LayerManager* layer_manager_;
+  int type_ = 0;
+  std::vector<BonusBrick> bonus_bricks_;
   ArkanerdCanvas* canvas_;
 };
 

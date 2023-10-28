@@ -1,10 +1,10 @@
 #include "ArkanerdCanvas.h"
 #include "BonusBrick.h"
+#include "BonusLayer.h"
 #include "BricksLayer.h"
 #include "Main.h"
+
 #include "j2me/GameCanvas.h"
-#include <iostream>
-#include <thread>
 
 namespace arkanerd {
 
@@ -17,12 +17,12 @@ ArkanerdCanvas::ArkanerdCanvas(Main *main, Settings *settings)
   //setCommandListener(main);
   width_ = getWidth();
   height_ = getHeight(); // - FRAME_TOP;
-  level_num_ = 1;
+  level_num_ = 0;
   lives_ = 3;
   //layer_manager_ = new j2me::LayerManager();
   //f = Font.getFont(Font.FACE_MONOSPACE, Font.STYLE_BOLD, Font.SIZE_SMALL);
 
-  bgimage_ = j2me::Image::createImage("/levels/level" + std::to_string(level_num_) + ".png");
+  bgimage_ = j2me::Image::createImage("/levels/level" + std::to_string(level_num_ + 1) + ".png");
   int rows = (height_ / bgimage_.getHeight()) + 1;
   if (bg_layer_) {
     layer_manager_.remove(bg_layer_.get());
@@ -59,7 +59,7 @@ void ArkanerdCanvas::dead() {
   lives_layer_->update(lives_);
   board_->setPosition(width_ / 2 - board_->getWidth() / 2, height_ - BOARD_SPACE);
   ball_->setPosition(width_ / 2 - ball_->getWidth() / 2, height_ - BOARD_SPACE - ball_->getHeight());
-  bonus_->clear();
+  bonus_layer_->reset();
   // Show start text and pause game
   start();
 }
@@ -68,9 +68,9 @@ void ArkanerdCanvas::start() {
   current_bonus_ = BonusBrick::NO_BONUS;
 
   //Show the level name
-  textLayer = std::make_unique<TextLayer>(level_->getName(), width_ / TextLayer::WIDTH);
-  textLayer->setPosition((width_ - textLayer->getWidth()) / 2, (height_ - textLayer->getHeight()) / 2);
-  layer_manager_.append(textLayer.get());
+  text_layer_ = std::make_unique<TextLayer>(level_->getName(), width_ / TextLayer::WIDTH);
+  text_layer_->setPosition((width_ - text_layer_->getWidth()) / 2, (height_ - text_layer_->getHeight()) / 2);
+  layer_manager_.append(text_layer_.get());
   /*
   if (player_) {
     if (player_->getState() != j2me::Player::STARTED) {
@@ -78,22 +78,19 @@ void ArkanerdCanvas::start() {
     }
   }
   */
+  layer_manager_.clear();;
   paused_ = true;
 }
 
 void ArkanerdCanvas::nextLevel() {
   level_num_++;
+
   // Try and load the new level if unsuccesfull, no more levels available
   try {
     level_ = std::make_unique<Level>(level_num_);
-  } catch (const std::runtime_error& ex) {
-    std::cerr << "Whoops: " << ex.what() << "\n";
+  } catch (const std::runtime_error&) {
     main_->gameComplete(points_);
   }
-  if (bonus_ != nullptr) {
-    bonus_->clear();
-  }
-  bonus_ = std::make_unique<Bonus>(&layer_manager_, this);
 
   //TODO:
   ball_->setAngle(2, -3);
@@ -101,11 +98,18 @@ void ArkanerdCanvas::nextLevel() {
 
   // Set up the new bricks for this level
   board_->setPosition(width_ / 2 - board_->getWidth() / 2, height_ - BOARD_SPACE);
+
   layer_manager_.remove(bricks_layer_.get());
   bricks_layer_ = std::make_unique<BricksLayer>(this, level_.get());
   layer_manager_.append(bricks_layer_.get());
 
-		// Set music for this level (if possible)
+  if (bonus_layer_) {
+    layer_manager_.remove(bonus_layer_.get());
+  }
+  bonus_layer_ = std::make_unique<BonusLayer>(this);
+  layer_manager_.append(bonus_layer_.get());
+
+  // Set music for this level (if possible)
   if (settings_->musicOn()) {
     if (player_  && player_->getState() == j2me::Player::STARTED) {
       player_->close();
@@ -128,7 +132,7 @@ void ArkanerdCanvas::update() {
     input();
     checkCollisions();
     ball_->update();
-    bonus_->update();
+    bonus_layer_->update();
     if (ball_->getY() > height_) {
       dead();
       // GOD MODE:
@@ -205,13 +209,13 @@ void ArkanerdCanvas::checkCollisions() {
     points_ += 10;
     point_layer_->setNum(points_);
     if (brick.getType() != 0) {
-      bonus_->addBonus(brick.getX(), brick.getY(), brick.getType());
+      bonus_layer_->addBonus(brick.getX(), brick.getY(), brick.getType());
     }
   }
 
   // See if the board picked up a bonus
-  if (bonus_->checkCollisions(board_.get())) {
-    switch (bonus_->getType()) {
+  if (bonus_layer_->checkCollisions(board_.get())) {
+    switch (bonus_layer_->getType()) {
       case BonusBrick::NO_BONUS:
         break;
       case BonusBrick::POINT_BONUS:
@@ -242,7 +246,7 @@ void ArkanerdCanvas::render() {
 }
 
 void ArkanerdCanvas::keyPressed(int keyCode) {
-  layer_manager_.remove(textLayer.get());
+  layer_manager_.remove(text_layer_.get());
   paused_ = false;
   j2me::GameCanvas::keyPressed(keyCode);
 }

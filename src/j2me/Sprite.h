@@ -10,6 +10,11 @@ class Sprite : public Layer {
 public:
   Sprite(const j2me::Image& image);
   Sprite(const j2me::Image& image, int frameWidth, int frameHeight);
+  Sprite(const Sprite&);
+  Sprite& operator=(const Sprite&) = delete;
+  Sprite(Sprite&&) = default;
+  Sprite& operator=(Sprite&&) = default;
+
   void paint(Graphics* g) override;
   void clear() override;
   bool collidesWith(TiledLayer* t, bool pixelLevel);

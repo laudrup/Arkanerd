@@ -9,11 +9,11 @@ Layer::Layer(int width, int height)
   , height_(height) {
 }
 
-int Layer::getHeight() {
+int Layer::getHeight() const {
   return height_;
 }
 
-int Layer::getWidth() {
+int Layer::getWidth() const {
   return width_;
 }
 
