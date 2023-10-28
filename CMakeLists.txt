@@ -56,7 +56,6 @@ add_library(j2me STATIC
   src/j2me/Font.cpp
   src/j2me/Canvas.cpp
   src/j2me/ImageItem.cpp
-  src/j2me/LayerManager.cpp
 )
 
 target_link_libraries(j2me PRIVATE

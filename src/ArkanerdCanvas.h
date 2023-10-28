@@ -11,14 +11,8 @@
 #include "Level.h"
 
 #include "j2me/GameCanvas.h"
-#include "j2me/Image.h"
 #include "j2me/Player.h"
 #include "j2me/TiledLayer.h"
-#include "j2me/LayerManager.h"
-
-#include <cmath>
-#include <stdexcept>
-#include <mutex>
 
 namespace arkanerd {
 class Main;
@@ -41,14 +35,11 @@ public:
   void keyPressed(int keyCode) override;
 
 private:
-  friend class BricksLayer;
   void start();
 
   Main* main_ = nullptr;
   Settings* settings_ = nullptr;
   bool paused_ = true;
-
-  j2me::LayerManager layer_manager_;
 
   std::unique_ptr<j2me::TiledLayer> bg_layer_;
   std::unique_ptr<Board> board_;

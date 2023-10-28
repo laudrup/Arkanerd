@@ -14,12 +14,10 @@ public:
   int getX();
   int getY();
   void move(int dx, int dy);
-  //void setVisible(bool visible);
 
 protected:
   Layer() = default;
   Layer(int width, int height);
-  //bool visible() const;
 
 private:
   int width_ = 0;

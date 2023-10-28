@@ -16,14 +16,10 @@ ArkanerdCanvas::ArkanerdCanvas(Main *main, Settings *settings)
   ball_ = std::make_unique<Ball>(this);
 
   point_layer_ = std::make_unique<PointLayer>(5);
-  lives_layer_ = std::make_unique<LivesLayer>(lives_);
-
-  layer_manager_.append(point_layer_.get());
-  layer_manager_.append(lives_layer_.get());
   point_layer_->setPosition(20,10);
+
+  lives_layer_ = std::make_unique<LivesLayer>(lives_);
   lives_layer_->setPosition(getWidth() - 20 - lives_layer_->getWidth(), 10);
-  layer_manager_.append(board_.get());
-  layer_manager_.append(ball_.get());
 }
 
 void ArkanerdCanvas::flushKeys() {
@@ -36,9 +32,10 @@ void ArkanerdCanvas::dead() {
   }
   lives_--;
   lives_layer_->update(lives_);
+
   board_->setPosition(getWidth() / 2 - board_->getWidth() / 2, getHeight() - BOARD_SPACE);
   ball_->setPosition(getWidth() / 2 - ball_->getWidth() / 2, getHeight() - BOARD_SPACE - ball_->getHeight());
-  bonus_layer_->reset();
+
   start();
 }
 
@@ -47,8 +44,6 @@ void ArkanerdCanvas::start() {
 
   text_layer_ = std::make_unique<TextLayer>(level_->getName(), getWidth() / TextLayer::WIDTH);
   text_layer_->setPosition((getWidth() - text_layer_->getWidth()) / 2, (getHeight() - text_layer_->getHeight()) / 2);
-  layer_manager_.append(text_layer_.get());
-  layer_manager_.clear();;
   paused_ = true;
 }
 
@@ -67,20 +62,12 @@ void ArkanerdCanvas::nextLevel() {
   bg_layer_->fillCells(0,0,1,rows,1);
 
   ball_->setAngle(2, -3);
-  ball_->setPosition(getWidth() / 2 - ball_->getWidth() / 2, getHeight() - BOARD_SPACE - ball_->getHeight());
 
   board_->setPosition(getWidth() / 2 - board_->getWidth() / 2, getHeight() - BOARD_SPACE);
+  ball_->setPosition(getWidth() / 2 - ball_->getWidth() / 2, getHeight() - BOARD_SPACE - ball_->getHeight());
 
-  layer_manager_.remove(bricks_layer_.get());
   bricks_layer_ = std::make_unique<BricksLayer>(this, level_.get());
-  layer_manager_.append(bricks_layer_.get());
-
-  if (bonus_layer_) {
-    layer_manager_.remove(bonus_layer_.get());
-  }
   bonus_layer_ = std::make_unique<BonusLayer>(this);
-  layer_manager_.append(bonus_layer_.get());
-
   start();
 }
 
@@ -189,17 +176,26 @@ void ArkanerdCanvas::checkCollisions() {
 }
 
 void ArkanerdCanvas::clear() {
-  layer_manager_.clear();;
+  point_layer_->clear();
+  lives_layer_->clear();
 }
 
 void ArkanerdCanvas::render() {
   j2me::Graphics* g = getGraphics();
   bg_layer_->paint(g);
-  layer_manager_.paint(g, 0, 0);
+  point_layer_->paint(g);
+  lives_layer_->paint(g);
+  bricks_layer_->paint(g);
+  board_->paint(g);
+  ball_->paint(g);
+  bonus_layer_->paint(g);
+  if (paused_) {
+    text_layer_->clear();
+    text_layer_->paint(g);
+  }
 }
 
 void ArkanerdCanvas::keyPressed(int keyCode) {
-  layer_manager_.remove(text_layer_.get());
   paused_ = false;
   j2me::GameCanvas::keyPressed(keyCode);
 }
