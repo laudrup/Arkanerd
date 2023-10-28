@@ -5,8 +5,6 @@
 #include "ImageItem.h"
 #include "StringItem.h"
 
-#include <iostream>
-
 namespace {
 std::string wrap_text(std::string str, const j2me::Font& font, int width) {
   size_t last_space = 0;

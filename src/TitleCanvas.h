@@ -6,22 +6,22 @@
 #include "j2me/Font.h"
 #include "j2me/Graphics.h"
 
+#include <functional>
 #include <string>
 
 namespace arkanerd {
-class Main;
 
 class TitleCanvas : public j2me::Canvas {
 
 public:
-  TitleCanvas(Main* main);
+  TitleCanvas(j2me::MIDlet* midlet, std::function<void()> on_dismiss);
   void keyPressed(int key) final;
 
 protected:
   void paint(j2me::Graphics* g) final;
 
 private:
-  Main* main_;
+  std::function<void()> on_dismiss_;
   std::unique_ptr<TextLayer> text_;
   j2me::Font f_;
   const std::string S1_ = "Kasper Laudrup";

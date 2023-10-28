@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Command.h"
-#include "SFML/Window/Keyboard.hpp"
 
+#include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 
 #include <map>

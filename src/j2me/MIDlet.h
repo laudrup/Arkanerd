@@ -8,11 +8,6 @@ class MIDlet {
 public:
   virtual ~MIDlet() = default;
   int run();
-  void notifyDestroyed();
-
-protected:
-  virtual void startApp() = 0;
-  virtual void destroyApp(bool unconditional) = 0;
 
 private:
   friend Display;

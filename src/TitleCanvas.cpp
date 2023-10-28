@@ -1,11 +1,12 @@
 #include "TitleCanvas.h"
-#include "Main.h"
+
+#include <j2me/MIDlet.h>
 
 namespace arkanerd {
 
-TitleCanvas::TitleCanvas(Main* main)
-  : j2me::Canvas(main)
-  , main_(main) {
+TitleCanvas::TitleCanvas(j2me::MIDlet* midlet, std::function<void()> on_dismiss)
+  : j2me::Canvas(midlet)
+  , on_dismiss_(on_dismiss) {
   f_ = j2me::Font::getFont(j2me::Font::FACE_SYSTEM, j2me::Font::STYLE_PLAIN, j2me::Font::SIZE_SMALL);
 
   text_ = std::make_unique<TextLayer>("arkanerd", 8);
@@ -29,7 +30,7 @@ void TitleCanvas::paint(j2me::Graphics *g) {
 }
 
 void TitleCanvas::keyPressed(int /*key*/) {
-  main_->showMenu();
+  on_dismiss_();
 }
 
 } // namespace arkanerd

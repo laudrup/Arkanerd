@@ -5,11 +5,7 @@
 
 namespace j2me {
 
-void MIDlet::notifyDestroyed() {
-}
-
 int MIDlet::run() {
-  startApp();
   auto& window = display_.window_;
   while (window.isOpen()) {
     sf::Event event;

@@ -27,8 +27,6 @@ public:
   void gameOver(int points);
 
 private:
-  void startApp() final;
-  void destroyApp(bool unconditional) final;
   void commandAction(const j2me::Command& cmd, const j2me::Displayable& dsp) final;
   void newGame();
   void showScoreString(int score, j2me::Form* form);

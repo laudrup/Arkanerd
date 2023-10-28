@@ -14,21 +14,15 @@ namespace arkanerd {
 Main::Main()
   : display_(j2me::Display::getDisplay(this))
   , settings_(std::make_unique<Settings>()) {
-}
 
-void Main::startApp() {
-  auto title = std::make_unique<TitleCanvas>(this);
+  auto title = std::make_unique<TitleCanvas>(this, [this]() {
+    showMenu();
+  });
   display_->setCurrent(std::move(title));
 }
 
-void Main::destroyApp(bool /*unconditional*/) {
-}
-
 void Main::commandAction(const j2me::Command& cmd, const j2me::Displayable& /*dsp*/) {
-  if (cmd.getCommandType() == j2me::Command::EXIT) {
-    destroyApp(true);
-    notifyDestroyed();
-  } else if (cmd.getCommandType() == j2me::Command::BACK) {
+  if (cmd.getCommandType() == j2me::Command::BACK) {
     showMenu();
   } else if (cmd == SAVE_COMMAND) {
     auto settings_menu = dynamic_cast<j2me::List*>(display_->getCurrent());
