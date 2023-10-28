@@ -50,15 +50,14 @@ private:
 
   j2me::LayerManager layer_manager_;
 
+  std::unique_ptr<j2me::TiledLayer> bg_layer_;
   std::unique_ptr<Board> board_;
   std::unique_ptr<Ball> ball_;
   std::unique_ptr<BonusLayer> bonus_layer_;
   std::unique_ptr<BricksLayer> bricks_layer_;
-  j2me::Image bgimage_;
   std::unique_ptr<j2me::Player> player_;
   std::unique_ptr<PointLayer> point_layer_;
   std::unique_ptr<LivesLayer> lives_layer_;
-  std::unique_ptr<j2me::TiledLayer> bg_layer_;
   std::unique_ptr<TextLayer> text_layer_;
   std::unique_ptr<Level> level_;
   int current_bonus_ = 0;

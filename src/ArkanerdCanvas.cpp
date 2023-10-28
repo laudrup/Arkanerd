@@ -12,18 +12,9 @@ ArkanerdCanvas::ArkanerdCanvas(Main *main, Settings *settings)
   : j2me::GameCanvas(main)
   , main_(main)
   , settings_(settings) {
-
-  bgimage_ = j2me::Image::createImage("/levels/level" + std::to_string(level_num_ + 1) + ".png");
-  int rows = (getHeight() / bgimage_.getHeight()) + 1;
-  if (bg_layer_) {
-    layer_manager_.remove(bg_layer_.get());
-  }
-  bg_layer_ = std::make_unique<j2me::TiledLayer>(1, rows, bgimage_, bgimage_.getWidth(), bgimage_.getHeight());
-  bg_layer_->fillCells(0,0,1,rows,1);
-  layer_manager_.append(bg_layer_.get());
-
   board_ = std::make_unique<Board>();
   ball_ = std::make_unique<Ball>(this);
+
   point_layer_ = std::make_unique<PointLayer>(5);
   lives_layer_ = std::make_unique<LivesLayer>(lives_);
 
@@ -69,6 +60,11 @@ void ArkanerdCanvas::nextLevel() {
   } catch (const std::runtime_error&) {
     main_->gameComplete(points_);
   }
+
+  auto bgimage = j2me::Image::createImage("/levels/level" + std::to_string(level_num_) + ".png");
+  int rows = (getHeight() / bgimage.getHeight()) + 1;
+  bg_layer_ = std::make_unique<j2me::TiledLayer>(1, rows, bgimage, bgimage.getWidth(), bgimage.getHeight());
+  bg_layer_->fillCells(0,0,1,rows,1);
 
   ball_->setAngle(2, -3);
   ball_->setPosition(getWidth() / 2 - ball_->getWidth() / 2, getHeight() - BOARD_SPACE - ball_->getHeight());
@@ -198,6 +194,7 @@ void ArkanerdCanvas::clear() {
 
 void ArkanerdCanvas::render() {
   j2me::Graphics* g = getGraphics();
+  bg_layer_->paint(g);
   layer_manager_.paint(g, 0, 0);
 }
 
