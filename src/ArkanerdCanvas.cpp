@@ -9,21 +9,12 @@
 namespace arkanerd {
 
 ArkanerdCanvas::ArkanerdCanvas(Main *main, Settings *settings)
-  : j2me::GameCanvas(main) {
-  //XXX: This slows down the game generates keyevents
-  setFullScreenMode(true);
-  this->main_ = main;
-  this->settings_ = settings;
-  //setCommandListener(main);
-  width_ = getWidth();
-  height_ = getHeight(); // - FRAME_TOP;
-  level_num_ = 0;
-  lives_ = 3;
-  //layer_manager_ = new j2me::LayerManager();
-  //f = Font.getFont(Font.FACE_MONOSPACE, Font.STYLE_BOLD, Font.SIZE_SMALL);
+  : j2me::GameCanvas(main)
+  , main_(main)
+  , settings_(settings) {
 
   bgimage_ = j2me::Image::createImage("/levels/level" + std::to_string(level_num_ + 1) + ".png");
-  int rows = (height_ / bgimage_.getHeight()) + 1;
+  int rows = (getHeight() / bgimage_.getHeight()) + 1;
   if (bg_layer_) {
     layer_manager_.remove(bg_layer_.get());
   }
@@ -39,7 +30,7 @@ ArkanerdCanvas::ArkanerdCanvas(Main *main, Settings *settings)
   layer_manager_.append(point_layer_.get());
   layer_manager_.append(lives_layer_.get());
   point_layer_->setPosition(20,10);
-  lives_layer_->setPosition(width_ - 20 - lives_layer_->getWidth(), 10);
+  lives_layer_->setPosition(getWidth() - 20 - lives_layer_->getWidth(), 10);
   layer_manager_.append(board_.get());
   layer_manager_.append(ball_.get());
 }
@@ -49,35 +40,23 @@ void ArkanerdCanvas::flushKeys() {
 }
 
 void ArkanerdCanvas::dead() {
-  //XXX Vibrate doesn't work??
-  //Display display = Display.getDisplay(main);
-  //display.vibrate(1000);
   if (lives_ == 0) {
     main_->gameOver(points_);
   }
   lives_--;
   lives_layer_->update(lives_);
-  board_->setPosition(width_ / 2 - board_->getWidth() / 2, height_ - BOARD_SPACE);
-  ball_->setPosition(width_ / 2 - ball_->getWidth() / 2, height_ - BOARD_SPACE - ball_->getHeight());
+  board_->setPosition(getWidth() / 2 - board_->getWidth() / 2, getHeight() - BOARD_SPACE);
+  ball_->setPosition(getWidth() / 2 - ball_->getWidth() / 2, getHeight() - BOARD_SPACE - ball_->getHeight());
   bonus_layer_->reset();
-  // Show start text and pause game
   start();
 }
 
 void ArkanerdCanvas::start() {
   current_bonus_ = BonusBrick::NO_BONUS;
 
-  //Show the level name
-  text_layer_ = std::make_unique<TextLayer>(level_->getName(), width_ / TextLayer::WIDTH);
-  text_layer_->setPosition((width_ - text_layer_->getWidth()) / 2, (height_ - text_layer_->getHeight()) / 2);
+  text_layer_ = std::make_unique<TextLayer>(level_->getName(), getWidth() / TextLayer::WIDTH);
+  text_layer_->setPosition((getWidth() - text_layer_->getWidth()) / 2, (getHeight() - text_layer_->getHeight()) / 2);
   layer_manager_.append(text_layer_.get());
-  /*
-  if (player_) {
-    if (player_->getState() != j2me::Player::STARTED) {
-      player_->start();
-    }
-  }
-  */
   layer_manager_.clear();;
   paused_ = true;
 }
@@ -85,19 +64,16 @@ void ArkanerdCanvas::start() {
 void ArkanerdCanvas::nextLevel() {
   level_num_++;
 
-  // Try and load the new level if unsuccesfull, no more levels available
   try {
     level_ = std::make_unique<Level>(level_num_);
   } catch (const std::runtime_error&) {
     main_->gameComplete(points_);
   }
 
-  //TODO:
   ball_->setAngle(2, -3);
-  ball_->setPosition(width_ / 2 - ball_->getWidth() / 2, height_ - BOARD_SPACE - ball_->getHeight());
+  ball_->setPosition(getWidth() / 2 - ball_->getWidth() / 2, getHeight() - BOARD_SPACE - ball_->getHeight());
 
-  // Set up the new bricks for this level
-  board_->setPosition(width_ / 2 - board_->getWidth() / 2, height_ - BOARD_SPACE);
+  board_->setPosition(getWidth() / 2 - board_->getWidth() / 2, getHeight() - BOARD_SPACE);
 
   layer_manager_.remove(bricks_layer_.get());
   bricks_layer_ = std::make_unique<BricksLayer>(this, level_.get());
@@ -109,20 +85,6 @@ void ArkanerdCanvas::nextLevel() {
   bonus_layer_ = std::make_unique<BonusLayer>(this);
   layer_manager_.append(bonus_layer_.get());
 
-  // Set music for this level (if possible)
-  if (settings_->musicOn()) {
-    if (player_  && player_->getState() == j2me::Player::STARTED) {
-      player_->close();
-    }
-    //InputStream *ins = getClass().getResourceAsStream("/levels/level" + std::to_string(level_num) + ".mid");
-    //player_ = Manager::createPlayer(ins, "audio/midi");
-    //player_->setLoopCount(-1);
-  }
-
-  // Render the initial graphics
-  //render();
-
-  // Show start text and pause game
   start();
 }
 
@@ -133,7 +95,7 @@ void ArkanerdCanvas::update() {
     checkCollisions();
     ball_->update();
     bonus_layer_->update();
-    if (ball_->getY() > height_) {
+    if (ball_->getY() > getHeight()) {
       dead();
       // GOD MODE:
       //ball_->reverseY();
@@ -149,7 +111,7 @@ void ArkanerdCanvas::input() {
   int keyStates = getKeyStates();
   int currentX = board_->getX();
   if ((keyStates & LEFT_PRESSED) != 0) {
-    board_->setPosition(std::max(FRAME_WIDTH, currentX - BOARD_SPEED), height_ - BOARD_SPACE);
+    board_->setPosition(std::max(FRAME_WIDTH, currentX - BOARD_SPEED), getHeight() - BOARD_SPACE);
     if (ball_->isSticky()) {
       if (currentX - BOARD_SPEED > FRAME_WIDTH) {
         ball_->move(-BOARD_SPEED, 0);
@@ -157,9 +119,9 @@ void ArkanerdCanvas::input() {
     }
   }
   if ((keyStates & RIGHT_PRESSED) != 0) {
-    board_->setPosition(std::min(width_ - FRAME_WIDTH - board_->getWidth(), currentX + BOARD_SPEED), height_ - BOARD_SPACE);
+    board_->setPosition(std::min(getWidth() - FRAME_WIDTH - board_->getWidth(), currentX + BOARD_SPEED), getHeight() - BOARD_SPACE);
     if (ball_->isSticky()) {
-      if (width_ - FRAME_WIDTH - board_->getWidth() > currentX + BOARD_SPEED) {
+      if (getWidth() - FRAME_WIDTH - board_->getWidth() > currentX + BOARD_SPEED) {
         ball_->move(BOARD_SPEED, 0);
      }
     }
@@ -170,13 +132,10 @@ void ArkanerdCanvas::input() {
 }
 
 void ArkanerdCanvas::checkCollisions() {
-  // See if the ball hit the board
   if (ball_->collidesWith(board_.get(), false)) {
-    // Calculate where on the board the ball hit
     int hit = ((ball_->getX() + ball_->getWidth() / 2) - board_->getX()) - (board_->getWidth() / 2);
     int x = hit / 3;
     int y = 5 - std::abs(x);
-    //XXX: Should be random
     if (x == 0) {
       x++;
     }
@@ -193,9 +152,7 @@ void ArkanerdCanvas::checkCollisions() {
     }
   }
 
-  // See if the ball hit any bricks
   if (bricks_layer_->checkCollisions(ball_.get())) {
-    // We have a collision, but where did we hit the brick?
     auto brick = bricks_layer_->getBrick();
     sf::Rect brick_bounds{brick.getX(), brick.getY(), brick.getWidth(), brick.getHeight()};
     sf::Rect ball_bounds{ball_->getX(), ball_->getY(), ball_->getWidth(), ball_->getHeight()};
@@ -213,7 +170,6 @@ void ArkanerdCanvas::checkCollisions() {
     }
   }
 
-  // See if the board picked up a bonus
   if (bonus_layer_->checkCollisions(board_.get())) {
     switch (bonus_layer_->getType()) {
       case BonusBrick::NO_BONUS:

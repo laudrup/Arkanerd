@@ -45,6 +45,7 @@ private:
   void start();
 
   Main* main_ = nullptr;
+  Settings* settings_ = nullptr;
   bool paused_ = true;
 
   j2me::LayerManager layer_manager_;
@@ -55,17 +56,13 @@ private:
   std::unique_ptr<BricksLayer> bricks_layer_;
   j2me::Image bgimage_;
   std::unique_ptr<j2me::Player> player_;
-  //private boolean music_on;
-  Settings* settings_ = nullptr;
   std::unique_ptr<PointLayer> point_layer_;
   std::unique_ptr<LivesLayer> lives_layer_;
   std::unique_ptr<j2me::TiledLayer> bg_layer_;
   std::unique_ptr<TextLayer> text_layer_;
   std::unique_ptr<Level> level_;
   int current_bonus_ = 0;
-  int width_ = 0;
-  int height_ = 0;
-  int lives_ = 0;
+  int lives_ = 3;
   int points_ = 0;
   int level_num_ = 0;
   const int BOARD_SPEED = 5;
