@@ -5,8 +5,6 @@
 #include "j2me/Canvas.h"
 #include "j2me/Font.h"
 #include "j2me/Image.h"
-#include "j2me/Player.h"
-#include "j2me/PlayerListener.h"
 #include "j2me/Graphics.h"
 
 #include <string>
@@ -15,11 +13,10 @@
 namespace arkanerd {
 class Main;
 
-class TitleCanvas : public j2me::Canvas, public j2me::PlayerListener {
+class TitleCanvas : public j2me::Canvas {
 
 public:
   TitleCanvas(Main* main);
-  void playerUpdate(const j2me::Player* player, const std::string& event, const char* data) override;
   void keyPressed(int key) override;
 
 protected:
@@ -35,7 +32,6 @@ private:
   const std::string S2_ = "Copyright (c) 2006/7";
   j2me::Image bg_image_;
   std::unique_ptr<j2me::TiledLayer> bg_layer_;
-  j2me::Player player_;
 };
 
 }

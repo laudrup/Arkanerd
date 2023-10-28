@@ -1,10 +1,6 @@
 #include "TitleCanvas.h"
 #include "Main.h"
 
-#include "j2me/Manager.h"
-
-#include <fstream>
-
 namespace arkanerd {
 
 TitleCanvas::TitleCanvas(Main* main)
@@ -22,11 +18,6 @@ TitleCanvas::TitleCanvas(Main* main)
   int rows = (height_ / bg_image_.getHeight()) + 1;
   bg_layer_ = std::make_unique<j2me::TiledLayer>(1, rows, bg_image_, bg_image_.getWidth(), bg_image_.getHeight());
   bg_layer_->fillCells(0,0,1,rows,1);
-
-  std::ifstream ins{"/music/intro.mid"};
-  player_ = j2me::Manager::createPlayer(ins, "audio/midi");
-  player_.addPlayerListener(this);
-  player_.start();
 }
 
 void TitleCanvas::paint(j2me::Graphics *g) {
@@ -40,17 +31,7 @@ void TitleCanvas::paint(j2me::Graphics *g) {
   g->drawString(S2_, width_ / 2, (height_ / 2 + height_ / 4 + f_.getHeight()) + 2, j2me::Graphics::TOP | j2me::Graphics::HCENTER);
 }
 
-void TitleCanvas::playerUpdate(const j2me::Player* /*player*/, const std::string& event, const char* /*data*/) {
-  if (event == END_OF_MEDIA) {
-    player_.stop();
-    player_.close();
-    main_->showMenu();
-	}
-}
-
 void TitleCanvas::keyPressed(int /*key*/) {
-  player_.stop();
-  player_.close();
   main_->showMenu();
 }
 

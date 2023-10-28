@@ -11,7 +11,6 @@
 #include "Level.h"
 
 #include "j2me/GameCanvas.h"
-#include "j2me/Player.h"
 #include "j2me/TiledLayer.h"
 
 namespace arkanerd {
@@ -46,7 +45,6 @@ private:
   std::unique_ptr<Ball> ball_;
   std::unique_ptr<BonusLayer> bonus_layer_;
   std::unique_ptr<BricksLayer> bricks_layer_;
-  std::unique_ptr<j2me::Player> player_;
   std::unique_ptr<PointLayer> point_layer_;
   std::unique_ptr<LivesLayer> lives_layer_;
   std::unique_ptr<TextLayer> text_layer_;
