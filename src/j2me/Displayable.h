@@ -29,12 +29,12 @@ protected:
   virtual void handlePaint(Graphics* target);
 
   sf::View view_;
+  MIDlet* midlet_;
 
 private:
   friend MIDlet;
   friend class List;
 
-  MIDlet* midlet_;
   int width_ = 0;
   int height_ = 0;
   std::map<int, Command> commands_;
