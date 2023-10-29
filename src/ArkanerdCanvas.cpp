@@ -26,9 +26,10 @@ void ArkanerdCanvas::flushKeys() {
   getKeyStates();
 }
 
-void ArkanerdCanvas::dead() {
+bool ArkanerdCanvas::dead() {
   if (lives_ == 0) {
     main_->gameOver(points_);
+    return false;
   }
   lives_--;
   lives_layer_->update(lives_);
@@ -37,6 +38,7 @@ void ArkanerdCanvas::dead() {
   ball_->setPosition(getWidth() / 2 - ball_->getWidth() / 2, getHeight() - BOARD_SPACE - ball_->getHeight());
 
   start();
+  return true;
 }
 
 void ArkanerdCanvas::start() {
@@ -47,13 +49,14 @@ void ArkanerdCanvas::start() {
   paused_ = true;
 }
 
-void ArkanerdCanvas::nextLevel() {
+bool ArkanerdCanvas::nextLevel() {
   level_num_++;
 
   try {
     level_ = std::make_unique<Level>(level_num_);
   } catch (const std::runtime_error&) {
     main_->gameComplete(points_);
+    return false;
   }
 
   auto bgimage = j2me::Image::createImage("/levels/level" + std::to_string(level_num_) + ".png");
@@ -69,6 +72,7 @@ void ArkanerdCanvas::nextLevel() {
   bricks_layer_ = std::make_unique<BricksLayer>(this, level_.get());
   bonus_layer_ = std::make_unique<BonusLayer>(this);
   start();
+  return true;
 }
 
 void ArkanerdCanvas::update() {
@@ -79,12 +83,16 @@ void ArkanerdCanvas::update() {
     ball_->update();
     bonus_layer_->update();
     if (ball_->getY() > getHeight()) {
-      dead();
+      if (!dead()) {
+        return;
+      }
       // GOD MODE:
       //ball_->reverseY();
     }
     if (bricks_layer_->getBricksLeft() == 0) {
-      nextLevel();
+      if (!nextLevel()) {
+        return;
+      }
     }
   }
   render();

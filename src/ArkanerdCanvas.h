@@ -24,8 +24,8 @@ public:
 
   ArkanerdCanvas(Main* main, Settings* settings);
   void flushKeys();
-  void dead();
-  void nextLevel();
+  bool dead();
+  bool nextLevel();
   void update() override;
   void input();
   void checkCollisions();

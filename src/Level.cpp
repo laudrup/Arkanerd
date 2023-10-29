@@ -3,6 +3,7 @@
 
 #include <fstream>
 #include <iostream>
+#include <stdexcept>
 
 namespace arkanerd {
 
@@ -39,9 +40,6 @@ std::vector<Brick> Level::getBricks() const {
 void Level::parseLevelFile(const std::vector<std::string>& lines) {
   int color, type;
   int count = 0;
-  //Brick *brick;
-  //bricks_ = std::vector<std::unique_ptrBrick>();
-  //XXX: First parse non-brick lines
   for (const auto& line : lines) {
     if (line.rfind("#") == 0) {
       continue; // Skip comments
@@ -79,6 +77,9 @@ void Level::parseLevelFile(const std::vector<std::string>& lines) {
 std::vector<std::string> Level::readFile(const std::string& fname) {
   std::vector<std::string> ret;
   std::ifstream ifs{fname};
+  if (!ifs.is_open()) {
+    throw std::runtime_error("Unable to open: " + fname);
+  }
   std::string line;
   while (std::getline(ifs, line)) {
     ret.push_back(line);
