@@ -1,5 +1,6 @@
 #include "BonusLayer.h"
 #include "ArkanerdCanvas.h"
+#include "Main.h"
 
 namespace arkanerd {
 
@@ -8,7 +9,7 @@ BonusLayer::BonusLayer(ArkanerdCanvas* canvas)
 }
 
 void BonusLayer::addBonus(int x, int y, int type) {
-  BonusBrick bonus(type);
+  BonusBrick bonus(canvas_->main_->resources, type);
   bonus.setPosition(x, y);
   bonus_bricks_.push_back(std::move(bonus));
 }

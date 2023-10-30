@@ -34,6 +34,7 @@ public:
   void keyPressed(int keyCode) override;
 
 private:
+  friend class BonusLayer;
   void start();
 
   Main* main_ = nullptr;

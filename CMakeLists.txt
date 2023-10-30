@@ -76,6 +76,7 @@ add_executable(arkanerd
   src/LivesLayer.cpp
   src/Main.cpp
   src/PointLayer.cpp
+  src/ResourceManager.cpp
   src/Settings.cpp
   src/TextLayer.cpp
   src/TitleCanvas.cpp
@@ -89,4 +90,13 @@ target_link_libraries(arkanerd PRIVATE
   j2me
   project_options
   project_warnings
+)
+
+add_custom_command(
+  TARGET arkanerd POST_BUILD
+  COMMAND ${CMAKE_COMMAND}
+  ARGS -E copy_directory
+  ${PROJECT_SOURCE_DIR}/res
+  $<TARGET_FILE_DIR:arkanerd>/res
+  VERBATIM
 )

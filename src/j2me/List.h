@@ -5,6 +5,7 @@
 #include "Command.h"
 
 #include <SFML/Window/Keyboard.hpp>
+
 #include <string>
 #include <vector>
 

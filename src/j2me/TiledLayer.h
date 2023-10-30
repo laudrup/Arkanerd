@@ -11,7 +11,7 @@ class Image;
 
 class TiledLayer : public Layer {
 public:
-  TiledLayer(int columns, int rows, const Image& image, int tileWidth, int tileHeight);
+  TiledLayer(const sf::Texture* texture, int columns, int rows, int tileWidth, int tileHeight);
   void paint(Graphics* g) override;
   void clear() override;
   void fillCells(int col, int row, int numCols, int numRows, int tileIndex);
@@ -20,7 +20,6 @@ public:
 
 private:
   std::vector<std::vector<int>> grid_;
-  //int columns_;
   sf::Texture texture_;
   sf::RenderTexture target_;
   std::vector<sf::Sprite> sprites_;

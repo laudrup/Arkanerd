@@ -1,5 +1,7 @@
 #pragma once
 
+#include "ResourceManager.h"
+
 #include "j2me/TiledLayer.h"
 
 #include <string>
@@ -7,7 +9,7 @@
 namespace arkanerd {
 class LivesLayer : public j2me::TiledLayer {
 public:
-  LivesLayer(int lives);
+  LivesLayer(ResourceManager& resources, int lives);
   void update(int lives);
 
 private:

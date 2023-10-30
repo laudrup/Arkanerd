@@ -1,11 +1,13 @@
 #pragma once
 
+#include "ResourceManager.h"
+
 #include "j2me/Sprite.h"
 
 namespace arkanerd {
 class BonusBrick : public j2me::Sprite {
 public:
-  BonusBrick(int type);
+  BonusBrick(ResourceManager& resources, int type);
   int getType();
 
   static constexpr int NO_BONUS = 0;

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "ResourceManager.h"
 #include "j2me/Sprite.h"
 
 namespace arkanerd {
@@ -7,17 +8,16 @@ namespace arkanerd {
 class ArkanerdCanvas;
 
 class Ball : public j2me::Sprite {
-	public:
-		Ball(ArkanerdCanvas *canvas);
+public:
+  Ball(ResourceManager& resources, ArkanerdCanvas *canvas);
 
-		//TODO: Set ball to start position
-		void reset();
-		void setSticky(bool b);
-		bool isSticky();
-		void setAngle(int x_angle, int y_angle);
-		void reverseX();
-		void reverseY();
-		void update();
+  //TODO: Set ball to start position
+  void setSticky(bool b);
+  bool isSticky();
+  void setAngle(int x_angle, int y_angle);
+  void reverseX();
+  void reverseY();
+  void update();
 
 private:
   ArkanerdCanvas* canvas_;

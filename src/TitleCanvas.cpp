@@ -9,12 +9,12 @@ TitleCanvas::TitleCanvas(j2me::MIDlet* midlet, std::function<void()> on_dismiss)
   , on_dismiss_(on_dismiss) {
   f_ = j2me::Font::getFont(j2me::Font::FACE_SYSTEM, j2me::Font::STYLE_PLAIN, j2me::Font::SIZE_SMALL);
 
-  text_ = std::make_unique<TextLayer>("arkanerd", 8);
-  auto bg_image = j2me::Image::createImage("/images/titlebg.png");
-
+  text_ = std::make_unique<TextLayer>(midlet_->resources, "arkanerd", 8);
   text_->setPosition((getWidth() - text_->getWidth()) / 2, (getHeight() - text_->getHeight()) / 2);
-  int rows = (getHeight() / bg_image.getHeight()) + 1;
-  bg_layer_ = std::make_unique<j2me::TiledLayer>(1, rows, bg_image, bg_image.getWidth(), bg_image.getHeight());
+
+  const auto texture = midlet_->resources.getTexture("/images/titlebg.png");
+  int rows = (getHeight() / texture->getSize().y) + 1;
+  bg_layer_ = std::make_unique<j2me::TiledLayer>(texture, 1, rows, texture->getSize().x, texture->getSize().y);
   bg_layer_->fillCells(0, 0, 1, rows, 1);
 }
 

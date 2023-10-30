@@ -1,16 +1,14 @@
 #pragma once
 
+#include "ResourceManager.h"
+
 #include "j2me/Sprite.h"
 
-#include <string>
-
 namespace arkanerd {
+
 class Board : public j2me::Sprite {
 public:
-  Board();
-
-private:
-  static std::string BOARD_FILE;
+  Board(ResourceManager& resources);
 };
 
 } // namespace arkanerd

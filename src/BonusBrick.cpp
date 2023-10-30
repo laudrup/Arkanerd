@@ -4,8 +4,8 @@
 
 namespace arkanerd {
 
-BonusBrick::BonusBrick(int type)
-  : j2me::Sprite(j2me::Image::createImage("/images/bonus" + std::to_string(type) + ".png"), 20, 10)
+BonusBrick::BonusBrick(ResourceManager& resources, int type)
+  : j2me::Sprite(j2me::Image::createImage(resources.getTexture("/images/bonus" + std::to_string(type) + ".png")), 20, 10)
   , type_(type) {
 }
 

@@ -1,15 +1,17 @@
 #pragma once
 
+#include "ResourceManager.h"
+
 #include "j2me/TiledLayer.h"
 
 #include <string>
 
 namespace arkanerd {
+
 class PointLayer : public j2me::TiledLayer {
 public:
-  PointLayer(int digits);
+  PointLayer(ResourceManager& resources, int digits);
   void setNum(int num);
-  //void add(int amount);
 
 private:
   int number_ = 0;
@@ -18,4 +20,4 @@ private:
   const std::string chars_ = "abcdefghijklmnopqrstuvwxyz 0123456789!;:'-_?";
 };
 
-}
+} // namespace arkanerd

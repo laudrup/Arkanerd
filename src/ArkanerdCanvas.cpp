@@ -12,13 +12,13 @@ ArkanerdCanvas::ArkanerdCanvas(Main *main, Settings *settings)
   : j2me::GameCanvas(main)
   , main_(main)
   , settings_(settings) {
-  board_ = std::make_unique<Board>();
-  ball_ = std::make_unique<Ball>(this);
+  board_ = std::make_unique<Board>(main_->resources);
+  ball_ = std::make_unique<Ball>(main_->resources, this);
 
-  point_layer_ = std::make_unique<PointLayer>(5);
+  point_layer_ = std::make_unique<PointLayer>(main_->resources, 5);
   point_layer_->setPosition(20,10);
 
-  lives_layer_ = std::make_unique<LivesLayer>(lives_);
+  lives_layer_ = std::make_unique<LivesLayer>(main_->resources, lives_);
   lives_layer_->setPosition(getWidth() - 20 - lives_layer_->getWidth(), 10);
 }
 
@@ -44,7 +44,7 @@ bool ArkanerdCanvas::dead() {
 void ArkanerdCanvas::start() {
   current_bonus_ = BonusBrick::NO_BONUS;
 
-  text_layer_ = std::make_unique<TextLayer>(level_->getName(), getWidth() / TextLayer::WIDTH);
+  text_layer_ = std::make_unique<TextLayer>(main_->resources, level_->getName(), getWidth() / TextLayer::WIDTH);
   text_layer_->setPosition((getWidth() - text_layer_->getWidth()) / 2, (getHeight() - text_layer_->getHeight()) / 2);
   paused_ = true;
 }
@@ -53,15 +53,15 @@ bool ArkanerdCanvas::nextLevel() {
   level_num_++;
 
   try {
-    level_ = std::make_unique<Level>(level_num_);
+    level_ = std::make_unique<Level>(main_->resources, level_num_);
   } catch (const std::runtime_error&) {
     main_->gameComplete(points_);
     return false;
   }
 
-  auto bgimage = j2me::Image::createImage("/levels/level" + std::to_string(level_num_) + ".png");
-  int rows = (getHeight() / bgimage.getHeight()) + 1;
-  bg_layer_ = std::make_unique<j2me::TiledLayer>(1, rows, bgimage, bgimage.getWidth(), bgimage.getHeight());
+  const auto texture = main_->resources.getTexture("/levels/level" + std::to_string(level_num_) + ".png");
+  int rows = (getHeight() / texture->getSize().y) + 1;
+  bg_layer_ = std::make_unique<j2me::TiledLayer>(texture, 1, rows, texture->getSize().x, texture->getSize().y);
   bg_layer_->fillCells(0,0,1,rows,1);
 
   ball_->setAngle(2, -3);

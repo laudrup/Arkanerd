@@ -1,14 +1,12 @@
 #include "TiledLayer.h"
 #include "Graphics.h"
-#include "Image.h"
-#include "SFML/Graphics/Rect.hpp"
 
 namespace j2me {
 
-TiledLayer::TiledLayer(int columns, int rows, const Image& img, int tileWidth, int tileHeight)
+TiledLayer::TiledLayer(const sf::Texture* texture, int columns, int rows, int tileWidth, int tileHeight)
   : Layer(columns * tileWidth, rows * tileHeight)
   , grid_(rows, std::vector<int>(columns, 0))
-  , texture_(img.texture_) {
+  , texture_(*texture) {
   for (unsigned int y = 0; y < texture_.getSize().y; y += tileHeight) {
     for (unsigned int x = 0; x < texture_.getSize().x; x += tileWidth) {
       sprites_.push_back({texture_, sf::IntRect{static_cast<int>(x), static_cast<int>(y), tileWidth, tileHeight}});

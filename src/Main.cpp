@@ -164,22 +164,22 @@ void Main::instructions() {
                            "when \"picked up\" with the player-controlled platform, changes the "
                            "gameplay in different ways.\n\n"
                            "The special powerup bonuses are:\n");
-  j2me::Image img = j2me::Image::createImage(j2me::Image::createImage("/images/bonus1.png"), 0, 0, 20, 10, j2me::Sprite::TRANS_NONE);
+  j2me::Image img = j2me::Image::createImage(j2me::Image::createImage(resources.getTexture("/images/bonus1.png")), 0, 0, 20, 10, j2me::Sprite::TRANS_NONE);
   auto bonus = std::make_unique<j2me::ImageItem>("100 Points", img, j2me::Item::LAYOUT_LEFT | j2me::Item::LAYOUT_NEWLINE_AFTER, "");
   form->append(std::move(bonus));
   form->append("Adds 100 points to the current score.");
 
-  img = j2me::Image::createImage(j2me::Image::createImage("/images/bonus2.png"), 0, 0, 20, 10, j2me::Sprite::TRANS_NONE);
+  img = j2me::Image::createImage(j2me::Image::createImage(resources.getTexture("/images/bonus2.png")), 0, 0, 20, 10, j2me::Sprite::TRANS_NONE);
   bonus = std::make_unique<j2me::ImageItem>("Sticky ball", img, j2me::Item::LAYOUT_LEFT | j2me::Item::LAYOUT_NEWLINE_AFTER, "");
   form->append(std::move(bonus));
   form->append("The ball \"sticks\" to the platform. Press the \"fire\" button to release it.");
 
-  img = j2me::Image::createImage(j2me::Image::createImage("/images/bonus3.png"), 0, 0, 20, 10, j2me::Sprite::TRANS_NONE);
+  img = j2me::Image::createImage(j2me::Image::createImage(resources.getTexture("/images/bonus3.png")), 0, 0, 20, 10, j2me::Sprite::TRANS_NONE);
   bonus = std::make_unique<j2me::ImageItem>("Power ball", img, j2me::Item::LAYOUT_LEFT | j2me::Item::LAYOUT_NEWLINE_AFTER, "");
   form->append(std::move(bonus));
   form->append("The ball doesn't bounce off the bricks, instead it shoots right through them.");
 
-  img = j2me::Image::createImage(j2me::Image::createImage("/images/bonus4.png"), 0, 0, 20, 10, j2me::Sprite::TRANS_NONE);
+  img = j2me::Image::createImage(j2me::Image::createImage(resources.getTexture("/images/bonus4.png")), 0, 0, 20, 10, j2me::Sprite::TRANS_NONE);
   bonus = std::make_unique< j2me::ImageItem>("Extra life", img, j2me::Item::LAYOUT_LEFT | j2me::Item::LAYOUT_NEWLINE_AFTER, "");
   form->append(std::move(bonus));
   form->append("Gives you an extra life.\n");
@@ -199,8 +199,7 @@ void Main::about() {
     " and you are welcome to change it and/or distribute copies of it"
     " under certain conditions.\n\n"
     "Please see http://www.linuxfan.dk for source code etc.";
-  auto tempVar = std::make_unique<j2me::StringItem>(std::nullopt, aboutText);
-  form->append(std::move(tempVar));
+  form->append(aboutText);
   form->addCommand(BACK_COMMAND);
   form->setCommandListener(this);
   display_->setCurrent(std::move(form));

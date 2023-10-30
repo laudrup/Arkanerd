@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Brick.h"
+#include "ResourceManager.h"
 
 #include <memory>
 #include <string>
@@ -13,7 +14,7 @@ namespace arkanerd {
     Level(Level &&) = default;
     Level &operator=(const Level &) = default;
     Level &operator=(Level &&) = default;
-    Level(int num);
+    Level(ResourceManager& resources, int num);
 
     // Number of bricks _excluding_ empty (Actual number of images in this level)
     int getNumBricks() const;
@@ -35,7 +36,7 @@ namespace arkanerd {
 		std::vector<bool> empty_;
 
 	private:
-		void parseLevelFile(const std::vector<std::string>& lines);
+		void parseLevelFile(ResourceManager& resources, const std::vector<std::string>& lines);
 		std::vector<std::string> readFile(const std::string& fname);
 	};
 

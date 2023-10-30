@@ -6,11 +6,8 @@
 #include <string>
 
 namespace j2me {
-Image::Image(const std::string& path) {
-  std::string full_path{std::string{"../res/"} + path};
-  if (!texture_.loadFromFile(full_path)) {
-    throw std::runtime_error{std::string{"Unable to load: "} + full_path};
-  }
+Image::Image(const sf::Texture* texture)
+  : texture_(*texture) {
 }
 
 Image::Image(const sf::Image& img, const sf::IntRect& area) {
@@ -19,8 +16,8 @@ Image::Image(const sf::Image& img, const sf::IntRect& area) {
   }
 }
 
-Image Image::createImage(const std::string& path) {
-  return Image{path};
+Image Image::createImage(const sf::Texture* texture) {
+  return Image{texture};
 }
 
 Image Image::createImage(const Image& image, int x, int y, int width, int height, [[maybe_unused]] int transform) {

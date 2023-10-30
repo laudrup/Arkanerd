@@ -7,9 +7,9 @@
 
 namespace arkanerd {
 
-Level::Level(int num) {
+Level::Level(ResourceManager& resources, int num) {
   std::vector lines = readFile("../res/levels/level" + std::to_string(num) + ".txt");
-  parseLevelFile(lines);
+  parseLevelFile(resources, lines);
 }
 
 int Level::getNumBricks() const {
@@ -37,7 +37,7 @@ std::vector<Brick> Level::getBricks() const {
   return bricks_;
 }
 
-void Level::parseLevelFile(const std::vector<std::string>& lines) {
+void Level::parseLevelFile(ResourceManager& resources, const std::vector<std::string>& lines) {
   int color, type;
   int count = 0;
   for (const auto& line : lines) {
@@ -64,8 +64,7 @@ void Level::parseLevelFile(const std::vector<std::string>& lines) {
         if (color == 0) {
           empty_[count] = true;
         } else {
-          //brick = new Brick(color, type);
-          bricks_.push_back(Brick(color, type));
+          bricks_.push_back(Brick(resources, color, type));
           num_bricks_++;
         }
         count++;
