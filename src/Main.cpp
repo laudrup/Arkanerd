@@ -1,10 +1,10 @@
 #include "Main.h"
 #include "ArkanerdCanvas.h"
+#include "TextCanvas.h"
 #include "TitleCanvas.h"
 
 #include "j2me/Display.h"
 #include "j2me/StringItem.h"
-#include "j2me/ImageItem.h"
 #include "j2me/List.h"
 
 #include <cassert>
@@ -63,36 +63,27 @@ void Main::showMenu() {
 }
 
 void Main::gameComplete(int points) {
-  auto form = std::make_unique<j2me::Form>(this, "Game completed!");
-  auto gameOverString = std::make_unique<j2me::StringItem>(std::nullopt, "You did it!\n");
-  gameOverString->setFont(j2me::Font::getFont(j2me::Font::FACE_MONOSPACE, j2me::Font::STYLE_BOLD, j2me::Font::SIZE_LARGE));
-  auto s1 = std::make_unique<j2me::StringItem>(std::nullopt, "You completed all leves!");
-  auto s2 = std::make_unique<j2me::StringItem>(std::nullopt, "Please go to http://www.linuxfan.dk");
-  auto s3 = std::make_unique<j2me::StringItem>(std::nullopt, "To look for more levels");
-  gameOverString->setLayout(j2me::Item::LAYOUT_CENTER);
-  s1->setLayout(j2me::Item::LAYOUT_CENTER);
-  s2->setLayout(j2me::Item::LAYOUT_CENTER);
-  s3->setLayout(j2me::Item::LAYOUT_CENTER);
-  form->append(std::move(gameOverString));
-  form->append(std::move(s1));
-  form->append(std::move(s2));
-  form->append(std::move(s3));
-  showScoreString(points, form.get());
-  form->addCommand(BACK_COMMAND);
-  form->setCommandListener(this);
-  display_->setCurrent(std::move(form));
+  TextCanvas::items_type items{
+    "You did it!\n"
+    "You completed all leves!\n"
+    "Please go to http://www.linuxfan.dk\n"
+    "To look for more levels\n",
+    getScoreString(points)
+  };
+
+  display_->setCurrent(std::make_unique<TextCanvas>(this, "Game completed!", items, [this]() {
+    showMenu();
+  }));
 }
 
 void Main::gameOver(int points) {
-  auto form = std::make_unique<j2me::Form>(this, "Game over!");
-  auto deadString = std::make_unique<j2me::StringItem>(std::nullopt, "Game over!\n");
-  deadString->setFont(j2me::Font::getFont(j2me::Font::FACE_MONOSPACE, j2me::Font::STYLE_BOLD, j2me::Font::SIZE_LARGE));
-  deadString->setLayout(j2me::Item::LAYOUT_CENTER);
-  form->append(std::move(deadString));
-  showScoreString(points, form.get());
-  form->addCommand(BACK_COMMAND);
-  form->setCommandListener(this);
-  display_->setCurrent(std::move(form));
+  TextCanvas::items_type items{
+    getScoreString(points)
+  };
+
+  display_->setCurrent(std::make_unique<TextCanvas>(this, "Game over!", items, [this]() {
+    showMenu();
+  }));
 }
 
 void Main::newGame() {
@@ -101,31 +92,19 @@ void Main::newGame() {
   dynamic_cast<ArkanerdCanvas*>(display_->getCurrent())->nextLevel();
 }
 
-void Main::showScoreString(int score, j2me::Form* form) {
+std::string Main::getScoreString(int score) {
   if (score > settings_->getHighScore()) {
     settings_->setHighScore(score);
-    auto s1 = std::make_unique<j2me::StringItem>(std::nullopt, "Congratulations!\n");
-    auto s2 = std::make_unique<j2me::StringItem>(std::nullopt, "You got a new High Score:\n");
-    auto s3 = std::make_unique<j2me::StringItem>(std::nullopt, std::to_string(score));
-    s1->setLayout(j2me::Item::LAYOUT_CENTER);
-    s2->setLayout(j2me::Item::LAYOUT_CENTER);
-    s3->setLayout(j2me::Item::LAYOUT_CENTER);
-    form->append(std::move(s1));
-    form->append(std::move(s2));
-    form->append(std::move(s3));
+    return std::string{
+      "Congratulations!\n"
+      "You got a new High Score:\n"}
+    + std::to_string(score);
   } else {
-    auto s1 = std::make_unique<j2me::StringItem>(std::nullopt, "Your Score:\n");
-    auto s2 = std::make_unique<j2me::StringItem>(std::nullopt, std::to_string(score) + "\n");
-    auto s3 = std::make_unique<j2me::StringItem>(std::nullopt, "High Score:\n");
-    auto s4 = std::make_unique<j2me::StringItem>(std::nullopt, std::to_string(settings_->getHighScore()));
-    s1->setLayout(j2me::Item::LAYOUT_CENTER);
-    s2->setLayout(j2me::Item::LAYOUT_CENTER);
-    s3->setLayout(j2me::Item::LAYOUT_CENTER);
-    s4->setLayout(j2me::Item::LAYOUT_CENTER);
-    form->append(std::move(s1));
-    form->append(std::move(s2));
-    form->append(std::move(s3));
-    form->append(std::move(s4));
+    return std::string{
+      "Your Score:\n"}
+     + std::to_string(score)
+       + "\nHigh Score:\n"
+       + std::to_string(settings_->getHighScore());
   }
 }
 
@@ -141,68 +120,65 @@ void Main::settings() {
 }
 
 void Main::highScores() {
-  auto form = std::make_unique<j2me::Form>(this, "High Score");
-  auto highString = std::make_unique<j2me::StringItem>(std::nullopt, "High score: " + std::to_string(settings_->getHighScore()));
-  highString->setLayout(j2me::Item::LAYOUT_CENTER);
-  form->append(std::move(highString));
-  form->addCommand(BACK_COMMAND);
-  form->setCommandListener(this);
-  display_->setCurrent(std::move(form));
+  const std::string text = "High score: " + std::to_string(settings_->getHighScore());
+  TextCanvas::items_type items{text};
+
+  display_->setCurrent(std::make_unique<TextCanvas>(this, "High Score", items, [this]() {
+    showMenu();
+  }));
 }
 
 void Main::instructions() {
-  auto form = std::make_unique<j2me::Form>(this, "Instructions");
-  form->append("Arkanerd is a little Arkanoid/Break-out like game.\n\n"
-                           "The goal of the game is to clear out the colored bricks "
-                           "placed in the central part of the screen\n\n"
-                           "This is achieved by bouncing the ball around the screen, which "
-                           "is done by moving the small platform located at the bottom of "
-                           "the screen.\n\n"
-                           "Be careful though, since you have to catch the ball before it "
-                           "leaves the screen, otherwise you lose a life.\n\n"
-                           "Special bricks releases a special bonus when you hit them, which, "
-                           "when \"picked up\" with the player-controlled platform, changes the "
-                           "gameplay in different ways.\n\n"
-                           "The special powerup bonuses are:\n");
-  j2me::Image img = j2me::Image::createImage(j2me::Image::createImage(resources.getTexture("/images/bonus1.png")), 0, 0, 20, 10, j2me::Sprite::TRANS_NONE);
-  auto bonus = std::make_unique<j2me::ImageItem>("100 Points", img, j2me::Item::LAYOUT_LEFT | j2me::Item::LAYOUT_NEWLINE_AFTER, "");
-  form->append(std::move(bonus));
-  form->append("Adds 100 points to the current score.");
+  TextCanvas::items_type items{
+    "Arkanerd is a little Arkanoid/Break-out like game.\n\n"
+    "The goal of the game is to clear out the colored bricks "
+    "placed in the central part of the screen\n\n"
+    "This is achieved by bouncing the ball around the screen, which "
+    "is done by moving the small platform located at the bottom of "
+    "the screen.\n\n"
+    "Be careful though, since you have to catch the ball before it "
+    "leaves the screen, otherwise you lose a life.\n\n"
+    "Special bricks releases a special bonus when you hit them, which, "
+    "when \"picked up\" with the player-controlled platform, changes the "
+    "gameplay in different ways.\n\n"
+    "The special powerup bonuses are:",
+    TextCanvas::ImageItem{
+      j2me::Image::createImage(j2me::Image::createImage(resources.getTexture("/images/bonus1.png")), 0, 0, 20, 10, j2me::Sprite::TRANS_NONE),
+      "100 Points"
+    },
+    "Adds 100 points to the current score.",
+    TextCanvas::ImageItem{
+      j2me::Image::createImage(j2me::Image::createImage(resources.getTexture("/images/bonus2.png")), 0, 0, 20, 10, j2me::Sprite::TRANS_NONE),
+      "Sticky ball"},
+    "The ball \"sticks\" to the platform. Press the \"fire\" button to release it.",
+    TextCanvas::ImageItem{
+      j2me::Image::createImage(j2me::Image::createImage(resources.getTexture("/images/bonus3.png")), 0, 0, 20, 10, j2me::Sprite::TRANS_NONE),
+      "Power ball"},
+    "The ball doesn't bounce off the bricks, instead it shoots right through them.",
+    TextCanvas::ImageItem{j2me::Image::createImage(j2me::Image::createImage(resources.getTexture("/images/bonus4.png")), 0, 0, 20, 10, j2me::Sprite::TRANS_NONE),
+      "Extra life"},
+    "Gives you an extra life.\n",
+    "Enjoy your time with Arkanerd!\n"
+  };
 
-  img = j2me::Image::createImage(j2me::Image::createImage(resources.getTexture("/images/bonus2.png")), 0, 0, 20, 10, j2me::Sprite::TRANS_NONE);
-  bonus = std::make_unique<j2me::ImageItem>("Sticky ball", img, j2me::Item::LAYOUT_LEFT | j2me::Item::LAYOUT_NEWLINE_AFTER, "");
-  form->append(std::move(bonus));
-  form->append("The ball \"sticks\" to the platform. Press the \"fire\" button to release it.");
-
-  img = j2me::Image::createImage(j2me::Image::createImage(resources.getTexture("/images/bonus3.png")), 0, 0, 20, 10, j2me::Sprite::TRANS_NONE);
-  bonus = std::make_unique<j2me::ImageItem>("Power ball", img, j2me::Item::LAYOUT_LEFT | j2me::Item::LAYOUT_NEWLINE_AFTER, "");
-  form->append(std::move(bonus));
-  form->append("The ball doesn't bounce off the bricks, instead it shoots right through them.");
-
-  img = j2me::Image::createImage(j2me::Image::createImage(resources.getTexture("/images/bonus4.png")), 0, 0, 20, 10, j2me::Sprite::TRANS_NONE);
-  bonus = std::make_unique< j2me::ImageItem>("Extra life", img, j2me::Item::LAYOUT_LEFT | j2me::Item::LAYOUT_NEWLINE_AFTER, "");
-  form->append(std::move(bonus));
-  form->append("Gives you an extra life.\n");
-  form->append("\n");
-  form->append("\nEnjoy your time with Arkanerd!");
-
-  form->addCommand(BACK_COMMAND);
-  form->setCommandListener(this);
-  display_->setCurrent(std::move(form));
+  display_->setCurrent(std::make_unique<TextCanvas>(this, "Instructions", items, [this]() {
+    showMenu();
+  }));
 }
 
 void Main::about() {
-  auto form = std::make_unique< j2me::Form>(this, "About Arkanerd");
-  std::string aboutText = "A little Arkanoid/Break-out like game for Java MIDP 2.0\n\n"
+  const std::string text = "A little Arkanoid/Break-out like game for Java MIDP 2.0\n\n"
     "Copyright (C) 2006 Kasper Laudrup\n\n"
     "Arkanerd is free software, covered by the GNU General Public License,"
     " and you are welcome to change it and/or distribute copies of it"
     " under certain conditions.\n\n"
     "Please see http://www.linuxfan.dk for source code etc.";
-  form->append(aboutText);
-  form->addCommand(BACK_COMMAND);
-  form->setCommandListener(this);
-  display_->setCurrent(std::move(form));
+
+  TextCanvas::items_type items{text};
+
+  display_->setCurrent(std::make_unique<TextCanvas>(this, "About Arkanerd", items, [this]() {
+    showMenu();
+  }));
 }
 
 } // namespace arkanerd

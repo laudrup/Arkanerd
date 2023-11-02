@@ -47,7 +47,6 @@ add_library(j2me STATIC
   src/j2me/Image.cpp
   src/j2me/TiledLayer.cpp
   src/j2me/GameCanvas.cpp
-  src/j2me/Form.cpp
   src/j2me/Display.cpp
   src/j2me/Sprite.cpp
   src/j2me/Font.cpp
@@ -66,6 +65,7 @@ target_link_libraries(j2me PUBLIC
 
 add_executable(arkanerd
   src/ArkanerdCanvas.cpp
+  src/BackgroundCanvas.cpp
   src/Ball.cpp
   src/Board.cpp
   src/BonusBrick.cpp
@@ -79,6 +79,7 @@ add_executable(arkanerd
   src/ResourceManager.cpp
   src/Settings.cpp
   src/TextLayer.cpp
+  src/TextCanvas.cpp
   src/TitleCanvas.cpp
 )
 

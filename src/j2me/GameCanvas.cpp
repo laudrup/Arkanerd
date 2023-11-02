@@ -28,7 +28,7 @@ Graphics* GameCanvas::getGraphics() {
   return graphics_;
 }
 
-void GameCanvas::keyPressed(int /*keyCode*/) {
+void GameCanvas::keyPressed(sf::Keyboard::Key /*keyCode*/) {
 }
 
 } // namespace j2me

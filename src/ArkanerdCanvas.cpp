@@ -203,7 +203,7 @@ void ArkanerdCanvas::render() {
   }
 }
 
-void ArkanerdCanvas::keyPressed(int keyCode) {
+void ArkanerdCanvas::keyPressed(sf::Keyboard::Key keyCode) {
   paused_ = false;
   j2me::GameCanvas::keyPressed(keyCode);
 }

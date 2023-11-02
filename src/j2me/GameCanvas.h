@@ -11,7 +11,7 @@ public:
   void flushGraphics();
   void paint(Graphics* g) override;
   virtual void update() = 0;
-  void keyPressed(int keyCode) override;
+  void keyPressed(sf::Keyboard::Key keyCode) override;
 
   inline static constexpr int UP_PRESSED = 0x0002;
   inline static constexpr int DOWN_PRESSED = 0x0040;

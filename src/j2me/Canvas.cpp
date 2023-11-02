@@ -8,7 +8,7 @@ void Canvas::setFullScreenMode(bool) {
   //abort();
 }
 
-void Canvas::keyPressed(int /*keyCode*/) {
+void Canvas::keyPressed(sf::Keyboard::Key /*keyCode*/) {
   abort();
 }
 

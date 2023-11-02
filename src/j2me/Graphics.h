@@ -20,7 +20,7 @@ public:
   void setFont(const Font& font);
   //void setColor(int red, int green, int blue);
   //void fillRect(int x, int y, int width, int height);
-  void drawString(const std::string& str, int x, int y, int anchor);
+  sf::FloatRect drawString(const std::string& str, int x, int y, int anchor);
   //void drawLine(int x1, int y1, int x2, int y2);
   //void setFont(const Font& font);
   //void drawChars(const char* data, int offset, int length, int x, int y, int anchor);
@@ -36,9 +36,9 @@ public:
   inline static constexpr int DOTTED = 1;
 
 private:
+  sf::RenderTarget* target_;
   friend class TiledLayer;
   friend class Form;
-  sf::RenderTarget* target_;
   Font font_;
   sf::Color color_;
 

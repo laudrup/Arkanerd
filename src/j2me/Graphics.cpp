@@ -29,14 +29,13 @@ void Graphics::setFont(const Font& font) {
 }
 
 void Graphics::drawImage(const Image& img, int x, int y, [[maybe_unused]] int anchor) {
-  //auto sprite = std::make_unique<sf::Sprite>(img.texture_);
   auto sprite = img.sprite();
   sprite->setPosition(static_cast<float>(x), static_cast<float>(y));
   target_->draw(*sprite);
   drawables_.push_back(std::move(sprite));
 }
 
-void Graphics::drawString(const std::string& str, int x, int y, int anchor) {
+sf::FloatRect Graphics::drawString(const std::string& str, int x, int y, int anchor) {
   auto text = std::make_unique<sf::Text>(str, font_.font_, font_.size());
   text->setStyle(font_.style());
   text->setFillColor(color_);
@@ -46,12 +45,14 @@ void Graphics::drawString(const std::string& str, int x, int y, int anchor) {
     auto localBounds = center + text->getLocalBounds().getPosition();
     auto rounded = round(localBounds);
     text->setOrigin(rounded);
-    text->setPosition(target_->getView().getSize().x / 2, static_cast<float>(y));
+    text->setPosition(target_->getView().getSize().x / 2 + x, static_cast<float>(y));
   } else {
     text->setPosition(static_cast<float>(x), static_cast<float>(y));
   }
   target_->draw(*text);
+  const auto bounds = text->getLocalBounds();
   drawables_.push_back(std::move(text));
+  return bounds;
 }
 
 } // namespace j2me

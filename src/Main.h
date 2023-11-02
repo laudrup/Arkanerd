@@ -6,7 +6,6 @@
 #include "j2me/CommandListener.h"
 #include "j2me/Display.h"
 #include "j2me/Displayable.h"
-#include "j2me/Form.h"
 #include "j2me/MIDlet.h"
 
 #include <string>
@@ -29,7 +28,7 @@ public:
 private:
   void commandAction(const j2me::Command& cmd, const j2me::Displayable& dsp) final;
   void newGame();
-  void showScoreString(int score, j2me::Form* form);
+  std::string getScoreString(int score);
   void settings();
   void highScores();
   void instructions();

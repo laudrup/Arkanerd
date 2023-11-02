@@ -31,7 +31,7 @@ public:
   void checkCollisions();
   void render();
   void clear();
-  void keyPressed(int keyCode) override;
+  void keyPressed(sf::Keyboard::Key keyCode) override;
 
 private:
   friend class BonusLayer;

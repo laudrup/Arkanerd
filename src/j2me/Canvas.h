@@ -7,7 +7,7 @@ namespace j2me {
 class Canvas : public Displayable {
 public:
   virtual ~Canvas() = default;
-  virtual void keyPressed(int keyCode);
+  virtual void keyPressed(sf::Keyboard::Key keyCode);
 
 protected:
   friend class MIDlet;
