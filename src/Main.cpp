@@ -1,13 +1,10 @@
 #include "Main.h"
 #include "ArkanerdCanvas.h"
 #include "TextCanvas.h"
+#include "MenuCanvas.h"
 #include "TitleCanvas.h"
 
 #include "j2me/Display.h"
-#include "j2me/StringItem.h"
-#include "j2me/List.h"
-
-#include <cassert>
 
 namespace arkanerd {
 
@@ -21,45 +18,31 @@ Main::Main()
   display_->setCurrent(std::move(title));
 }
 
-void Main::commandAction(const j2me::Command& cmd, const j2me::Displayable& /*dsp*/) {
-  if (cmd.getCommandType() == j2me::Command::BACK) {
-    showMenu();
-  } else if (cmd == SAVE_COMMAND) {
-    auto settings_menu = dynamic_cast<j2me::List*>(display_->getCurrent());
-    assert(settings_menu != nullptr);
-    std::vector<bool> selected(settings_menu->size());
-    // Fill array indicating whether each element is checked
-    settings_menu->getSelectedFlags(selected);
-    settings_->setMusic(selected[0]);
-    showMenu();
-  } else {
-    const j2me::List* menu = static_cast<j2me::List*>(display_->getCurrent());
-    switch (menu->getSelectedIndex()) {
-			case 0:
-				newGame();
-				break;
-			case 1:
-				instructions();
-				break;
-			case 2:
-				highScores();
-				break;
-			case 3:
-				settings();
-				break;
-			case 4:
-				about();
-				break;
-			}
-		}
-	}
+void Main::commandAction(const j2me::Command&, const j2me::Displayable& /*dsp*/) {
+}
 
 void Main::showMenu() {
-  std::vector<std::string> menuItems = {"New game", "Instructions", "High Scores", "Settings", "About"};
-  auto menu = std::make_unique<j2me::List>(this, "Arkanerd", j2me::Choice::IMPLICIT, menuItems, std::vector<j2me::Image>{});
-  menu->addCommand(EXIT_COMMAND);
-  menu->setCommandListener(this);
-  display_->setCurrent(std::move(menu));
+    std::vector<MenuCanvas::Entry> entries {
+    {"New game", [this]() {
+      newGame();
+    }},
+    {"Instructions", [this]() {
+      instructions();
+    }},
+    {"High scores", [this]() {
+      highScores();
+    }},
+    {"Settings", [this]() {
+      settings();
+    }},
+    {"About", [this]() {
+      about();
+    }}
+  };
+
+  display_->setCurrent(std::make_unique<MenuCanvas>(this, "Arkanerd", entries, []() {
+    // Exit game
+  }));
 }
 
 void Main::gameComplete(int points) {
@@ -98,25 +81,25 @@ std::string Main::getScoreString(int score) {
     return std::string{
       "Congratulations!\n"
       "You got a new High Score:\n"}
-    + std::to_string(score);
+      + std::to_string(score);
   } else {
     return std::string{
       "Your Score:\n"}
-     + std::to_string(score)
-       + "\nHigh Score:\n"
-       + std::to_string(settings_->getHighScore());
+      + std::to_string(score)
+      + "\nHigh Score:\n"
+      + std::to_string(settings_->getHighScore());
   }
 }
 
 void Main::settings() {
-  auto menu = std::make_unique<j2me::List>(this, "Settings", j2me::List::MULTIPLE);
-  menu->append("Enable Music", {});
-  menu->setSelectedIndex(0, settings_->musicOn());
-  menu->setCommandListener(this);
-  menu->addCommand(BACK_COMMAND);
-  menu->addCommand(SAVE_COMMAND);
-  menu->setCommandListener(this);
-  display_->setCurrent(std::move(menu));
+  std::vector<MenuCanvas::Entry> entries {
+    {"Enable music", []() {
+    }}
+  };
+
+  display_->setCurrent(std::make_unique<MenuCanvas>(this, "Settings", entries, [this]() {
+    showMenu();
+  }));
 }
 
 void Main::highScores() {
