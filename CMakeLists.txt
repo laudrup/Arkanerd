@@ -12,8 +12,6 @@ include(FetchContent)
 add_library(project_options INTERFACE)
 add_library(project_warnings INTERFACE)
 
-add_compile_options("-D_GLIBCXX_DEBUG")
-
 target_compile_features(project_options INTERFACE
   cxx_std_17
 )
