@@ -1,32 +1,14 @@
 #include "Settings.h"
 
+#include "os_util.h"
+
 #include <cstdlib>
 #include <fstream>
-
-#if !defined(WIN32)
-#include <unistd.h>
-#include <sys/types.h>
-#include <pwd.h>
-#endif
-
-namespace {
-std::filesystem::path get_data_dir() {
-#ifdef WIN32
-  return {};
-#else
-  if (const char* dir = getenv("XDG_DATA_HOME"); dir != nullptr) {
-    return std::filesystem::path{dir};
-  }
-  const auto home = getpwuid(getuid())->pw_dir;
-  return std::filesystem::path{home} / ".local" / "share";
-#endif
-}
-} // namespace
 
 namespace arkanerd {
 
 Settings::Settings()
-  : data_dir_(get_data_dir() / "arkanerd") {
+  : data_dir_(data_dir() / "arkanerd") {
   std::filesystem::create_directories(data_dir_);
 }
 

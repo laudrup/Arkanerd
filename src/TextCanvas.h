@@ -1,6 +1,7 @@
 #pragma once
 
 #include "BackgroundCanvas.h"
+#include "ShadowText.h"
 
 #include "j2me/Graphics.h"
 #include "j2me/Image.h"
@@ -28,10 +29,11 @@ protected:
 
 private:
   std::function<void()> on_dismiss_;
-  std::string title_;
+  sf::Font* font_;
+  ShadowText title_;
   items_type items_;
-  int offset_ = 10;
-  int height_ = 0;
+  float y_pos_ = 0;
+  float offset_ = 0;
 };
 
 } // namespace arkanerd

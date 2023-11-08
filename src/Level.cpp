@@ -1,6 +1,8 @@
 #include "Level.h"
 #include "Brick.h"
 
+#include "os_util.h"
+
 #include <fstream>
 #include <iostream>
 #include <stdexcept>
@@ -8,7 +10,7 @@
 namespace arkanerd {
 
 Level::Level(ResourceManager& resources, int num) {
-  std::vector lines = readFile("../res/levels/level" + std::to_string(num) + ".txt");
+  std::vector lines = readFile(current_exe_path().string() + "/res/levels/level" + std::to_string(num) + ".txt");
   parseLevelFile(resources, lines);
 }
 

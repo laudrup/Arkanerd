@@ -75,10 +75,23 @@ add_executable(arkanerd
   src/PointLayer.cpp
   src/ResourceManager.cpp
   src/Settings.cpp
+  src/ShadowText.cpp
   src/TextLayer.cpp
   src/TextCanvas.cpp
   src/TitleCanvas.cpp
 )
+
+if(UNIX AND NOT APPLE)
+  target_sources(arkanerd PRIVATE
+    src/os_util_linux.cpp
+  )
+elseif(WIN32)
+  target_sources(arkanerd PRIVATE
+    src/os_util_win32.cpp
+  )
+else()
+  message(SEND_ERROR "Platform currently unsupported")
+endif()
 
 target_include_directories(arkanerd PRIVATE
   src/
@@ -86,6 +99,7 @@ target_include_directories(arkanerd PRIVATE
 
 target_link_libraries(arkanerd PRIVATE
   j2me
+  sfml-graphics
   project_options
   project_warnings
 )

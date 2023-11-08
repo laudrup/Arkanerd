@@ -3,71 +3,45 @@
 #include "j2me/Image.h"
 #include "j2me/MIDlet.h"
 
-#include <SFML/Window/Keyboard.hpp>
+#include <SFML/Graphics.hpp>
+#include <SFML/Window.hpp>
 
 #include <cstdlib>
-
-#include <iostream>
-
-namespace {
-std::string wrap_text(std::string str, const j2me::Font& font, int width) {
-  size_t last_space = 0;
-  int line_width = 0;
-  for (size_t i = 0; i < str.size(); ++i) {
-    if (str[i] == '\n') {
-      line_width = 0;
-      continue;
-    }
-    line_width += font.getWidth(str[i]);
-    if (str[i] == ' ') {
-      last_space = i;
-    }
-    if (line_width > width) {
-      str[last_space] = '\n';
-      line_width = 0; // TODO: Recalculate actual width
-    }
-  }
-  return str;
-}
-} // namespace
 
 namespace arkanerd {
 
 TextCanvas::TextCanvas(j2me::MIDlet* midlet, const std::string& title, const items_type& items, std::function<void()> on_dismiss)
   : BackgroundCanvas(midlet)
   , on_dismiss_(on_dismiss)
-  , title_(title)
+  , font_(midlet_->resources.getFont("fonts/Skranji-Regular.ttf"))
+  , title_(title, font_, 16)
   , items_(items) {
 }
 
 void TextCanvas::paint(j2me::Graphics *g) {
   BackgroundCanvas::paint(g);
 
-  height_ = 5;
-  g->setFont(j2me::Font::getFont(j2me::Font::FACE_SYSTEM, j2me::Font::STYLE_PLAIN, j2me::Font::SIZE_MEDIUM));;
-  g->setColor(0x00000000);
-  g->drawString(title_, 0, height_ + offset_, j2me::Graphics::TOP | j2me::Graphics::VCENTER);
-  g->setColor(0x00DD2222);
-  height_ += static_cast<int>(g->drawString(title_, 1, height_ + offset_ + 1, j2me::Graphics::TOP | j2me::Graphics::VCENTER).height);
-  height_ += 5;
-  auto font = j2me::Font::getDefaultFont();
-  g->setFont(font);
+  y_pos_ = 0;
+  title_.center(g->target());
+  title_.move(0, y_pos_ + offset_);
+  g->target()->draw(title_);
+  y_pos_ += title_.bounds().height + 10;
+
   for (const auto& item : items_) {
     if (std::holds_alternative<std::string>(item)) {
-      const auto text = wrap_text(std::get<std::string>(item), font, getWidth() - 20);
-      g->setColor(0x00000000);
-      g->drawString(text, 10, height_ + offset_, j2me::Graphics::TOP | j2me::Graphics::HCENTER);
-      g->setColor(0x00DD2222);
-      height_ += static_cast<int>(g->drawString(text, 11, height_ + offset_ + 1, j2me::Graphics::TOP | j2me::Graphics::HCENTER).height);
-      height_ += 10;
+      ShadowText text{std::get<std::string>(item), font_, 8};
+      text.wrap(getWidth() - 20);
+      text.move(10, y_pos_ + offset_);
+      g->target()->draw(text);
+      y_pos_ += text.bounds().height + 10;
     } else {
-      const auto image = std::get<ImageItem>(item).image;
-      g->drawImage(image, 15, height_ + offset_, 0);
-      g->setColor(0x00000000);
-      g->drawString(std::get<ImageItem>(item).text, image.getWidth() + 20, height_ + offset_ - 2, 0);
-      g->setColor(0x00DD2222);
-      g->drawString(std::get<ImageItem>(item).text, image.getWidth() + 20, height_ + offset_ - 1, 0);
-      height_ += image.getHeight() + 5;
+      const auto& image = std::get<ImageItem>(item).image;
+      g->drawImage(image, 15, static_cast<int>(y_pos_ + offset_), 0);
+
+      ShadowText text{std::get<ImageItem>(item).text, font_, 8};
+      text.move(static_cast<float>(image.getWidth() + 20), y_pos_ + offset_ - 2);
+      g->target()->draw(text);
+      y_pos_ += image.getHeight() + 5;
     }
   }
 }
@@ -75,12 +49,12 @@ void TextCanvas::paint(j2me::Graphics *g) {
 void TextCanvas::keyPressed(sf::Keyboard::Key key) {
   switch (key) {
     case sf::Keyboard::Key::Up:
-      if (offset_ < 10) {
+      if (offset_ < 0) {
         offset_ += 10;
       }
       break;
     case sf::Keyboard::Key::Down:
-      if (std::abs(offset_) < height_ - getHeight()) {
+      if (std::abs(offset_) < y_pos_ - getHeight()) {
         offset_ -= 10;
       }
       break;

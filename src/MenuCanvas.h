@@ -1,6 +1,7 @@
 #pragma once
 
 #include "BackgroundCanvas.h"
+#include "ShadowText.h"
 
 #include "j2me/Graphics.h"
 
@@ -28,7 +29,8 @@ protected:
 
 private:
   std::function<void()> on_dismiss_;
-  std::string title_;
+  sf::Font* font_;
+  ShadowText title_;
   std::vector<Entry> entries_;
   std::vector<Entry>::iterator selected_;
 };
