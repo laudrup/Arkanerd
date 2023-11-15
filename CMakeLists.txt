@@ -108,3 +108,8 @@ add_custom_command(
   $<TARGET_FILE_DIR:arkanerd>/res
   VERBATIM
 )
+
+if(WIN32)
+  add_custom_command(TARGET arkanerd POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_RUNTIME_DLLS:arkanerd> $<TARGET_FILE_DIR:arkanerd> COMMAND_EXPAND_LISTS)
+endif()
