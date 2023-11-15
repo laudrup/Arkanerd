@@ -1,6 +1,5 @@
 #include "Displayable.h"
 #include "Canvas.h"
-#include "CommandListener.h"
 #include <iostream>
 
 namespace j2me {
@@ -16,10 +15,6 @@ int Displayable::getWidth() const {
 
 int Displayable::getHeight() const {
   return static_cast<int>(view_.getSize().y);
-}
-
-void Displayable::setCommandListener(CommandListener* l) {
-  command_listener_ = l;
 }
 
 void Displayable::handleKey(sf::Keyboard::Key key) {

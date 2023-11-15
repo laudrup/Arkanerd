@@ -2,7 +2,6 @@
 
 #include "Settings.h"
 
-#include "j2me/CommandListener.h"
 #include "j2me/Display.h"
 #include "j2me/MIDlet.h"
 
@@ -11,7 +10,7 @@
 
 namespace arkanerd {
 
-class Main : public j2me::MIDlet, j2me::CommandListener {
+class Main : public j2me::MIDlet {
 
 public:
   Main();

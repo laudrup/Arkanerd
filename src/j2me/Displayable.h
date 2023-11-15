@@ -7,8 +7,6 @@
 
 namespace j2me {
 
-class CommandListener;
-class Command;
 class MIDlet;
 class Graphics;
 
@@ -17,7 +15,6 @@ public:
   virtual ~Displayable() = default;
   int getWidth() const;
   int getHeight() const;
-  void setCommandListener(CommandListener* l);
 
 protected:
   friend class Display;
@@ -34,7 +31,6 @@ private:
 
   int width_ = 0;
   int height_ = 0;
-  CommandListener* command_listener_ = nullptr;
 };
 
 } // namespace j2me
