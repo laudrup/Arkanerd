@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Font.h"
 #include "Image.h"
 
 #include <string>
@@ -12,9 +11,6 @@ class Graphics {
 public:
   Graphics(sf::RenderTarget* target);
   void drawImage(const Image& img, int x, int y, int anchor);
-  //void setColor(int RGB);
-  //void setFont(const Font& font);
-  //sf::FloatRect drawString(const Font& font, const std::string& str, int x, int y, int anchor);
   sf::RenderTarget* target() const;
 
   inline static constexpr int HCENTER = 1;
@@ -31,7 +27,6 @@ private:
   sf::RenderTarget* target_;
   friend class TiledLayer;
   friend class Form;
-  Font font_;
   sf::Color color_;
 
   std::vector<std::unique_ptr<sf::Drawable>> drawables_;

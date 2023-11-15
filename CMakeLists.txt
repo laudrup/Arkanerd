@@ -42,7 +42,6 @@ add_library(j2me STATIC
   src/j2me/GameCanvas.cpp
   src/j2me/Display.cpp
   src/j2me/Sprite.cpp
-  src/j2me/Font.cpp
   src/j2me/Canvas.cpp
 )
 
