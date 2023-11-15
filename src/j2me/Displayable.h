@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Command.h"
-
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 
@@ -19,7 +17,6 @@ public:
   virtual ~Displayable() = default;
   int getWidth() const;
   int getHeight() const;
-  void addCommand(const Command& cmd);
   void setCommandListener(CommandListener* l);
 
 protected:
@@ -37,7 +34,6 @@ private:
 
   int width_ = 0;
   int height_ = 0;
-  std::map<int, Command> commands_;
   CommandListener* command_listener_ = nullptr;
 };
 

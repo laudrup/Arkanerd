@@ -34,7 +34,6 @@ FetchContent_MakeAvailable(SFML)
 
 add_library(j2me STATIC
   src/j2me/MIDlet.cpp
-  src/j2me/Command.cpp
   src/j2me/Layer.cpp
   src/j2me/Graphics.cpp
   src/j2me/Displayable.cpp

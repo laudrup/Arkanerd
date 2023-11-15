@@ -18,10 +18,6 @@ int Displayable::getHeight() const {
   return static_cast<int>(view_.getSize().y);
 }
 
-void Displayable::addCommand(const Command& cmd) {
-  commands_.insert({cmd.getCommandType(), cmd});
-}
-
 void Displayable::setCommandListener(CommandListener* l) {
   command_listener_ = l;
 }
@@ -31,20 +27,6 @@ void Displayable::handleKey(sf::Keyboard::Key key) {
   if (canvas) {
     canvas->keyPressed(key);
     return;
-  }
-  if (command_listener_ == nullptr) {
-    return;
-  }
-  switch (key) {
-    case sf::Keyboard::Key::Escape: {
-      const auto it = commands_.find(Command::BACK);
-      if (it != commands_.end()) {
-        command_listener_->commandAction(it->second, *this);
-      }
-      break;
-    }
-    default:
-      break;
   }
 }
 

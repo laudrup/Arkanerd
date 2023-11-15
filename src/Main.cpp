@@ -18,9 +18,6 @@ Main::Main()
   display_->setCurrent(std::move(title));
 }
 
-void Main::commandAction(const j2me::Command&, const j2me::Displayable& /*dsp*/) {
-}
-
 void Main::showMenu() {
     std::vector<MenuCanvas::Entry> entries {
     {"New game", [this]() {
