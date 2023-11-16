@@ -1,6 +1,6 @@
 #include "MIDlet.h"
 #include "Displayable.h"
-#include "GameCanvas.h"
+#include "../ArkanerdCanvas.h"
 #include "Graphics.h"
 
 namespace j2me {
@@ -36,7 +36,7 @@ int MIDlet::run() {
     j2me::Graphics g{&window};
     auto displayable = display_.getCurrent();
     displayable->handlePaint(&g);
-    if (auto game_canvas = dynamic_cast<GameCanvas*>(displayable); game_canvas != nullptr) {
+    if (auto game_canvas = dynamic_cast<arkanerd::ArkanerdCanvas*>(displayable); game_canvas != nullptr) {
       game_canvas->update();
     }
     window.display();

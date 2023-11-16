@@ -4,12 +4,10 @@
 #include "BricksLayer.h"
 #include "Main.h"
 
-#include "j2me/GameCanvas.h"
-
 namespace arkanerd {
 
 ArkanerdCanvas::ArkanerdCanvas(Main *main, Settings *settings)
-  : j2me::GameCanvas(main)
+  : j2me::Canvas(main)
   , main_(main)
   , settings_(settings) {
   board_ = std::make_unique<Board>(main_->resources);
@@ -203,9 +201,31 @@ void ArkanerdCanvas::render() {
   }
 }
 
-void ArkanerdCanvas::keyPressed(sf::Keyboard::Key keyCode) {
+int ArkanerdCanvas::getKeyStates() {
+  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+    return LEFT_PRESSED;
+  } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+    return RIGHT_PRESSED;
+  } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
+    return FIRE_PRESSED;
+  }
+  return 0;
+}
+
+void ArkanerdCanvas::flushGraphics() {
+  //abort();
+}
+
+void ArkanerdCanvas::paint(j2me::Graphics* g) {
+  graphics_ = g;
+}
+
+j2me::Graphics* ArkanerdCanvas::getGraphics() {
+  return graphics_;
+}
+
+void ArkanerdCanvas::keyPressed(sf::Keyboard::Key /*keyCode*/) {
   paused_ = false;
-  j2me::GameCanvas::keyPressed(keyCode);
 }
 
 } // namespace arkanerd

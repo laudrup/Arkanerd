@@ -10,28 +10,41 @@
 #include "TextLayer.h"
 #include "Level.h"
 
-#include "j2me/GameCanvas.h"
+#include "j2me/Canvas.h"
 #include "j2me/TiledLayer.h"
 
 namespace arkanerd {
 class Main;
 
-class ArkanerdCanvas : public j2me::GameCanvas {
+class ArkanerdCanvas : public j2me::Canvas {
 public:
-  static constexpr int FRAME_WIDTH = 7;
-  static constexpr int FRAME_TOP = 40; // Vi skal have denne fra et eller andet sted
-  static constexpr int BOARD_SPACE = 20;
+  inline static constexpr int FRAME_WIDTH = 7;
+  inline static constexpr int FRAME_TOP = 40; // Vi skal have denne fra et eller andet sted
+  inline static constexpr int BOARD_SPACE = 20;
+  inline static constexpr int UP_PRESSED = 0x0002;
+  inline static constexpr int DOWN_PRESSED = 0x0040;
+  inline static constexpr int LEFT_PRESSED = 0x0004;
+  inline static constexpr int RIGHT_PRESSED = 0x0020;
+  inline static constexpr int FIRE_PRESSED = 0x0100;
+  inline static constexpr int GAME_A_PRESSED =  0x0200;
+  inline static constexpr int GAME_B_PRESSED =  0x0400;
+  inline static constexpr int GAME_C_PRESSED =  0x0800;
+  inline static constexpr int GAME_D_PRESSED = 0x1000;
 
   ArkanerdCanvas(Main* main, Settings* settings);
+  int getKeyStates();
+  j2me::Graphics* getGraphics();
+  void flushGraphics();
+  void paint(j2me::Graphics* g);
+  void keyPressed(sf::Keyboard::Key keyCode);
   void flushKeys();
   bool dead();
   bool nextLevel();
-  void update() override;
+  void update();
   void input();
   void checkCollisions();
   void render();
   void clear();
-  void keyPressed(sf::Keyboard::Key keyCode) override;
 
 private:
   friend class BonusLayer;
@@ -39,6 +52,7 @@ private:
 
   Main* main_ = nullptr;
   Settings* settings_ = nullptr;
+  j2me::Graphics* graphics_ = nullptr;
   bool paused_ = true;
 
   std::unique_ptr<j2me::TiledLayer> bg_layer_;
@@ -54,6 +68,7 @@ private:
   int lives_ = 3;
   int points_ = 0;
   int level_num_ = 0;
+  int key_states_ = 0;
   const int BOARD_SPEED = 5;
 };
 
