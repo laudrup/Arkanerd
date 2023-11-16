@@ -95,6 +95,7 @@ target_include_directories(arkanerd PRIVATE
 target_link_libraries(arkanerd PRIVATE
   j2me
   sfml-graphics
+  sfml-window
   project_options
   project_warnings
 )
