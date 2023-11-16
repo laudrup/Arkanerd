@@ -4,6 +4,19 @@
 #include "BricksLayer.h"
 #include "Main.h"
 
+namespace {
+constexpr int UP_PRESSED = 0x0002;
+constexpr int DOWN_PRESSED = 0x0040;
+constexpr int LEFT_PRESSED = 0x0004;
+constexpr int RIGHT_PRESSED = 0x0020;
+constexpr int FIRE_PRESSED = 0x0100;
+constexpr int GAME_A_PRESSED =  0x0200;
+constexpr int GAME_B_PRESSED =  0x0400;
+constexpr int GAME_C_PRESSED =  0x0800;
+constexpr int GAME_D_PRESSED = 0x1000;
+constexpr int BOARD_SPEED = 5;
+}
+
 namespace arkanerd {
 
 ArkanerdCanvas::ArkanerdCanvas(Main *main, Settings *settings)
@@ -18,10 +31,6 @@ ArkanerdCanvas::ArkanerdCanvas(Main *main, Settings *settings)
 
   lives_layer_ = std::make_unique<LivesLayer>(main_->resources, lives_);
   lives_layer_->setPosition(getWidth() - 20 - lives_layer_->getWidth(), 10);
-}
-
-void ArkanerdCanvas::flushKeys() {
-  getKeyStates();
 }
 
 bool ArkanerdCanvas::dead() {
@@ -210,10 +219,6 @@ int ArkanerdCanvas::getKeyStates() {
     return FIRE_PRESSED;
   }
   return 0;
-}
-
-void ArkanerdCanvas::flushGraphics() {
-  //abort();
 }
 
 void ArkanerdCanvas::paint(j2me::Graphics* g) {
